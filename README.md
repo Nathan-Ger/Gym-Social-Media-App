@@ -1,6 +1,6 @@
 ## Design
 
-Check out the [Figma Design]https://www.figma.com/file/ReRq1lIi6RyDIzWBcN4rQ1/Project-one?type=design&node-id=19%3A155&mode=design&t=PZaUb5OopcNPuHfA-1 for this project.
+Check out the Figma Design - https://www.figma.com/file/ReRq1lIi6RyDIzWBcN4rQ1/Project-one?type=design&node-id=19%3A155&mode=design&t=PZaUb5OopcNPuHfA-1 for this project.
 
 
 WRSPM Analysis:
