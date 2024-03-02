@@ -1,3 +1,10 @@
+## Design
+
+Check out the [Figma Design]https://www.figma.com/file/ReRq1lIi6RyDIzWBcN4rQ1/Project-one?type=design&node-id=19%3A155&mode=design&t=PZaUb5OopcNPuHfA-1 for this project.
+
+
+WRSPM Analysis:
+
 The “BeFit” application is a project aimed to aid your fitness goals. Users are able to post one picture of themselves everyday to show their progress over time. They are also able to view others' pictures, if the user posts a picture of themselves that day. Users are able to like and comment on other people’s posts. This allows for the users to have accountability to go to the gym everyday. Users can also give ratings to different gyms and restaurants. They are also able to Track and Share their workout. They can track the number of reps and sets or track the amount of weight that they lift. Lastly, users are able to have a profile page, where they can show off their trophies that they have collected over time. These trophies are achieved through improvements on the user’s goals. Overall, this application allows for a platform where users are able to do multiple gym-related activities within a single application.
 
 WRSPM analysis of the chosen problem:
