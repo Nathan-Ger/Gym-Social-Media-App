@@ -1,6 +1,6 @@
 ## Design
 
-Check out the Figma Design - [[https://www.figma.com/file/ReRq1lIi6RyDIzWBcN4rQ1/Project-one?type=design&node-id=19%3A155&mode=design&t=PZaUb5OopcNPuHfA-1](https://www.figma.com/file/ReRq1lIi6RyDIzWBcN4rQ1/Project-one?type=design&node-id=0-1&mode=design&t=0YW8kH2FRcF8BZOu-0)](https://www.figma.com/file/TMvxLdbgSfkJPDSZDZp7vy/befit---fitness-Application?type=design&node-id=0-1&mode=design&t=DLKPLM4T6mEGG4QK-0) for this project.
+Check out the Figma Design - https://www.figma.com/file/TMvxLdbgSfkJPDSZDZp7vy/befit---fitness-Application?type=design&node-id=0-1&mode=design&t=DLKPLM4T6mEGG4QK-0 for this project.
 
 
 WRSPM Analysis:
