@@ -7,8 +7,10 @@ import java.time.LocalDate;
  * 
  * 
  */
-public class Exercise implements Comparable<Exercise>{
+public class Exercise {
     
+    private String userName; // Used to connect to User object
+    private String email; // Used to connect to User Object
     private String typeofExercise; // Name of exercise
     private boolean lifted; // false if ran, true if lifted weights
     private LocalDate dateOfWorkout;
@@ -17,10 +19,5 @@ public class Exercise implements Comparable<Exercise>{
     private int sets; // Will show if lifted is true; Default is 1
     private double milesRan; // miles, will only show if lifted is false; Default is 0
     private int weightLifted; // lbs, will only show if lifted is true; Default is 0
-    
-    @Override
-    public int compareTo(Exercise other) {
-        return this.dateOfWorkout.compareTo(other.dateOfWorkout);
-    }
 
 }
