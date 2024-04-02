@@ -9,6 +9,8 @@ import java.time.LocalDate;
  */
 public class Exercise {
     
+
+    //test
     private String userName; // Used to connect to User object
     private String email; // Used to connect to User Object
     private String typeofExercise; // Name of exercise
