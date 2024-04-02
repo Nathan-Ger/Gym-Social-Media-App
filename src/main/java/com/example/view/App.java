@@ -20,9 +20,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        MongoDBConnect.mongoDB();
+        //MongoDBConnect.mongoDB();
         
-        scene = new Scene(loadFXML("/com/example/primary.fxml"), 640, 480);
+        scene = new Scene(loadFXML("/com/example/loginPage.fxml"));
         stage.setScene(scene);
         stage.show();
     }

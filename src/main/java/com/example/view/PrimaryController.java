@@ -11,8 +11,12 @@ public class PrimaryController {
 
     @FXML
     private void switchToSecondary() throws IOException {
+        // Test User
+        User u = new User("Nathanael", "Germain", "germnl",
+                "germnl@farmingdale.edu", "(516)305-0291",
+                LocalDate.of(2001, 7, 23),
+                205, 195, 170, 72, "testlink", 3600, 7);
 
-        
-
+        MongoDBConnect.insertUser(u);
     }
 }

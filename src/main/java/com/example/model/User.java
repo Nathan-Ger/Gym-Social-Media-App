@@ -172,4 +172,25 @@ public class User {
 
     //endregion
 
+
+
+    //Default Constructor
+    public User(String fName, String lName, String userName, String email,
+                String phoneNumber, LocalDate birthday, int startingWeight,
+                int currentWeight, int goalWeight, int height,
+                String profilePicture, int totalTimeInGym, int totalCaloriesBurned) {
+        this.fName = fName;
+        this.lName = lName;
+        this.userName = userName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.birthday = birthday;
+        this.startingWeight = startingWeight;
+        this.currentWeight = currentWeight;
+        this.goalWeight = goalWeight;
+        this.height = height;
+        this.profilePicture = profilePicture;
+        this.totalTimeInGym = totalTimeInGym;
+        this.totalCaloriesBurned = totalCaloriesBurned;
+    }
 }
