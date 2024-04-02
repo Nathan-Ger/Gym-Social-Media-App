@@ -1,6 +1,11 @@
 package com.example.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.mongodb.ConnectionString;
@@ -9,11 +14,14 @@ import com.mongodb.MongoException;
 import com.mongodb.MongoUpdatedEncryptedFieldsException;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.*;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 /**
  * @author NathanaelGermain
@@ -24,6 +32,8 @@ public class MongoDBConnect {
 
     private static MongoDatabase database;
     private static MongoClient mongoClient;
+
+    //region Initalize and Close Methods
 
     /** void initalizeMongoDB()
      * @author NathanaelGermain
@@ -83,6 +93,42 @@ public class MongoDBConnect {
 
     }
 
+    //endregion
+
+    //region Methods
+
+    public static boolean findDuplicateUserNames(String userName) {
+
+        MongoCollection<Document> collection = database.getCollection("Users");
+        Document document = collection.find(Filters.eq("userName", userName)).first();
+
+        if (document != null)
+            return true;
+
+        return false;
+
+    }
+
+    public static List<String> findIdWithUserName(String userName, String collectionName) {
+
+        List<String> ids = new ArrayList<>();
+        initializeMongoDB();
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        
+        //Document document = collection.find(Filters.eq("userName", userName)).first();
+        FindIterable<Document> documents = collection.find(Filters.eq("userName", userName));
+
+        for (Document document : documents) {
+            Object id = document.getObjectId("_id");
+            ids.add(id.toString());
+        }
+
+        closeMongoDB();
+
+        return ids;
+
+    }
+
     /** void insert(Document, String)
      * @author NathanaelGermain
      * 
@@ -100,5 +146,26 @@ public class MongoDBConnect {
         closeMongoDB();
 
     }
+
+    public static <T> void update(List<String> ids, String collectionName, String key, T value) {
+
+
+        initializeMongoDB();
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        //collection.updateOne(Filters.eq(new ObjectId(id)), Updates.set(key, value));
+
+        List<ObjectId> objectIds = ids.stream().map(ObjectId::new).collect(Collectors.toList()); // Convert String Ids to ObjectId
+
+        Bson filter = Filters.in("_id", objectIds);
+
+        UpdateResult result = collection.updateMany(filter, Updates.set(key, value));
+
+        System.out.println("\n\n\nUpdated " + result.getModifiedCount() + " documents.");
+
+        closeMongoDB();
+
+    }
+
+    //endregion
 
 }

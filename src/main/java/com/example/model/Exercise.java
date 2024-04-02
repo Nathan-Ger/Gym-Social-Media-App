@@ -13,7 +13,6 @@ import org.bson.types.ObjectId;
 public class Exercise {
     
     private String userName; // Used to connect to User object
-    private String email; // Used to connect to User Object
     private String typeofExercise; // Name of exercise
     private boolean lifted; // false if ran, true if lifted weights
     private LocalDate dateOfWorkout;
@@ -24,12 +23,11 @@ public class Exercise {
     private int weightLifted; // lbs, will only show if lifted is true; Default is 0
 
     // Default Constructor
-    public Exercise(String userName, String email, String typeofExercise, 
-                    boolean lifted, LocalDate dateOfWorkout, int timeSpent, 
-                    int caloriesBurned, int sets, double milesRan, int weightLifted) {
+    public Exercise(String userName, String typeofExercise, boolean lifted, 
+                    LocalDate dateOfWorkout, int timeSpent, int caloriesBurned, 
+                    int sets, double milesRan, int weightLifted) {
 
         this.userName = userName;
-        this.email = email;
         this.typeofExercise = typeofExercise;
         this.lifted = lifted;
         this.dateOfWorkout = dateOfWorkout;
@@ -38,7 +36,7 @@ public class Exercise {
         this.sets = sets;
         this.milesRan = milesRan;
         this.weightLifted = weightLifted;
-        
+
     }
 
     //region Setters
@@ -46,11 +44,6 @@ public class Exercise {
     // Setter for userName
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    // Setter for email
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     // Setter for type of exercise
@@ -103,11 +96,6 @@ public class Exercise {
         return userName;
     }
 
-    // Getter for email
-    public String getEmail() {
-        return email;
-    }
-
     // Getter for type of exercise
     public String getTypeOfExercise() {
         return typeofExercise;
@@ -155,7 +143,6 @@ public class Exercise {
         Document doc = new Document()
                         .append("_id", new ObjectId())
                         .append("userName", userName)
-                        .append("email", email)
                         .append("typeOfExercise", typeofExercise)
                         .append("lifted", lifted)
                         .append("dateOfWorkout", dateOfWorkout)

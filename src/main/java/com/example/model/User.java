@@ -1,6 +1,7 @@
 package com.example.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -204,12 +205,22 @@ public class User {
 
     //endregion
 
+    //region Methods
+
     public void insertUser() {
 
+        // Confirms there is not already the same username in the database
+        if (MongoDBConnect.findDuplicateUserNames(userName)) {
+            System.out.println("\n\n\nDuplicate username found.");
+            return;
+        }
+
+        // Creates a Document with the given user
         Document doc = new Document()
                         .append("_id", new ObjectId())
-                        .append("firstName", fName)
-                        .append("lastName", lName)
+                        .append("fName", fName)
+                        .append("lName", lName)
+                        .append("userName", userName)
                         .append("email", email)
                         .append("phoneNumber", phoneNumber)
                         .append("birthday", birthday)
@@ -221,8 +232,32 @@ public class User {
                         .append("totalTimeInGym", totalTimeInGym)
                         .append("totalCaloriesBurned", totalCaloriesBurned);
 
-        MongoDBConnect.insert(doc, "Users");
+        MongoDBConnect.insert(doc, "Users"); // Inserts user into database
 
     }
+
+    public static void updateUserName(String searchableUserName, String newUserName) {
+
+        // Confirms there is not already the same username in the database
+        if (MongoDBConnect.findDuplicateUserNames(newUserName)) {
+            System.out.println("\n\n\nDuplicate username found.");
+            return;
+        }
+
+        // Updates Users by username
+        List<String> userIds = MongoDBConnect.findIdWithUserName(searchableUserName, "Users");
+        MongoDBConnect.update(userIds, "Users", "userName", newUserName);
+
+        // Updates Excerises by username
+        List<String> exerciseIds = MongoDBConnect.findIdWithUserName(searchableUserName, "Exercise");
+        MongoDBConnect.update(exerciseIds, "Exercise", "userName", newUserName);
+
+        // Updates Posts by username
+        List<String> postIds = MongoDBConnect.findIdWithUserName(searchableUserName, "Posts");
+        MongoDBConnect.update(postIds, "Posts", "userName", newUserName);
+
+    }
+
+    //endregion
 
 }
