@@ -2,6 +2,9 @@ package com.example.model;
 
 import java.time.LocalDate;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 /**
  * @author NathanaelGermain
  * 
@@ -19,6 +22,24 @@ public class Exercise {
     private int sets; // Will show if lifted is true; Default is 1
     private double milesRan; // miles, will only show if lifted is false; Default is 0
     private int weightLifted; // lbs, will only show if lifted is true; Default is 0
+
+    // Default Constructor
+    public Exercise(String userName, String email, String typeofExercise, 
+                    boolean lifted, LocalDate dateOfWorkout, int timeSpent, 
+                    int caloriesBurned, int sets, double milesRan, int weightLifted) {
+
+        this.userName = userName;
+        this.email = email;
+        this.typeofExercise = typeofExercise;
+        this.lifted = lifted;
+        this.dateOfWorkout = dateOfWorkout;
+        this.timeSpent = timeSpent;
+        this.caloriesBurned = caloriesBurned;
+        this.sets = sets;
+        this.milesRan = milesRan;
+        this.weightLifted = weightLifted;
+        
+    }
 
     //region Setters
 
@@ -129,5 +150,23 @@ public class Exercise {
 
     //endregion
     
+    public void insertExercise() {
+
+        Document doc = new Document()
+                        .append("_id", new ObjectId())
+                        .append("userName", userName)
+                        .append("email", email)
+                        .append("typeOfExercise", typeofExercise)
+                        .append("lifted", lifted)
+                        .append("dateOfWorkout", dateOfWorkout)
+                        .append("timeSpent", timeSpent)
+                        .append("caloriesBurned", caloriesBurned)
+                        .append("sets", sets)
+                        .append("milesRan", milesRan)
+                        .append("weightLifted", weightLifted);
+
+        MongoDBConnect.insert(doc, "Exercise");
+
+    }
 
 }

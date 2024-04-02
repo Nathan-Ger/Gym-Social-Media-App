@@ -2,6 +2,9 @@ package com.example.model;
 
 import java.time.LocalDate;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 /**
  * @author NathanaelGermain
  * 
@@ -22,6 +25,46 @@ public class User {
     private String profilePicture; // string of link
     private int totalTimeInGym; // Seconds
     private int totalCaloriesBurned; // calories
+
+    //region Constructors
+
+    // Default Constructor
+    public User(String fName, String lName, String userName, String email, 
+                String phoneNumber, LocalDate birthday, int startingWeight, 
+                int currentWeight, int goalWeight, int height, 
+                String profilePicture, int totalTimeInGym, int totalCaloriesBurned) {
+        this.fName = fName;
+        this.lName = lName;
+        this.userName = userName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.birthday = birthday;
+        this.startingWeight = startingWeight;
+        this.currentWeight = currentWeight;
+        this.goalWeight = goalWeight;
+        this.height = height;
+        this.profilePicture = profilePicture;
+        this.totalTimeInGym = totalTimeInGym;
+        this.totalCaloriesBurned = totalCaloriesBurned;
+    }
+
+    // Constructor with only the necessary items.
+    public User(String fName, String lName, String userName, String email) {
+        this.fName = fName;
+        this.lName = lName;
+        this.userName = userName;
+        this.email = email;
+        this.phoneNumber = null;
+        this.birthday = null;
+        this.startingWeight = 0;
+        this.goalWeight = 0;
+        this.height = 0;
+        this.profilePicture = null;
+        this.totalTimeInGym = 0;
+        this.totalCaloriesBurned = 0;
+    }
+
+    //endregion
 
     //region Setters
 
@@ -160,6 +203,26 @@ public class User {
     }
 
     //endregion
-    
+
+    public void insertUser() {
+
+        Document doc = new Document()
+                        .append("_id", new ObjectId())
+                        .append("firstName", fName)
+                        .append("lastName", lName)
+                        .append("email", email)
+                        .append("phoneNumber", phoneNumber)
+                        .append("birthday", birthday)
+                        .append("startingWeight", startingWeight)
+                        .append("currentWeight", currentWeight)
+                        .append("goalWeight", goalWeight)
+                        .append("height", height)
+                        .append("profilePicture", profilePicture)
+                        .append("totalTimeInGym", totalTimeInGym)
+                        .append("totalCaloriesBurned", totalCaloriesBurned);
+
+        MongoDBConnect.insert(doc, "Users");
+
+    }
 
 }

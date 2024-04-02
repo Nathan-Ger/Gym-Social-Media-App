@@ -23,21 +23,21 @@ import com.mongodb.client.result.*;
 public class MongoDBConnect {
 
     private static MongoDatabase database;
-    private static MongoCollection<Document> collection;
     private static MongoClient mongoClient;
-    private static MongoClientSettings settings;
 
-    public static void mongoDB() {
+    private static void initializeMongoDB() {
 
         if (mongoClient != null) {
-            return;
+            System.out.println("\n\n\nCurrent MongoDB connection active.");
+            return; // Current mongoClient running
         }
 
         String dbPassword = System.getenv("MONGO_DB_PASSWORD");
-        if (dbPassword == null || dbPassword.isEmpty())
-            throw new IllegalStateException("MongoDB password not set in the environment variables.");
+        if (dbPassword == null || dbPassword.isBlank())
+            throw new IllegalStateException("\n\n\nMongoDB password not set in the environment variable");
 
-        String connectionString = "mongodb+srv://nathanlgermain:" + dbPassword + "@befit.uxd3dmt.mongodb.net/?retryWrites=true&w=majority&appName=BeFit";
+        String connectionString = "mongodb+srv://nathanlgermain:" + dbPassword + 
+            "@befit.uxd3dmt.mongodb.net/?retryWrites=true&w=majority&appName=BeFit";
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
@@ -47,95 +47,34 @@ public class MongoDBConnect {
                 .serverApi(serverApi)
                 .build();
 
-    
-                /*
-        // Create a new client and connect to the server
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
-            try {
-                // Send a ping to confirm a successful connection
-                database = mongoClient.getDatabase("Befit");
-                database.runCommand(new Document("ping", 1));
-                System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-            } catch (MongoException e) {
-                e.printStackTrace();
-            }
-        }*/
+        mongoClient = MongoClients.create(settings);
+        database = mongoClient.getDatabase("Befit");
+        System.out.println("\n\n\nMongoDB initialized and ready for use.");
+        
 
-        
-        
     }
 
-    public static void collectionChange(String collectionName) {
+    private static void closeMongoDB() {
 
-        if (database == null) {
-            System.err.println("Database connection is not initialized");
+        if (mongoClient == null) {
+            System.out.println("\n\n\nNo MongoDB connection active.");
             return;
         }
 
-        MongoCollection<Document> collection = database.getCollection(collectionName);
+        mongoClient.close();
+        mongoClient = null;
+        System.out.println("\n\n\nMongoDB connection closed");
 
     }
 
-    public static void insertUser(User u) {
+    public static void insert(@SuppressWarnings("exports") Document doc, String collectionName) {
 
-        //mongoDB();
-        
-        /*if (database == null || mongoClient == null) {
-            System.err.println("Database connection is not initialized");
-            return;
-        }*/
+        initializeMongoDB();
 
-        String dbPassword = System.getenv("MONGO_DB_PASSWORD");
-        if (dbPassword == null || dbPassword.isEmpty())
-            throw new IllegalStateException("MongoDB password not set in the environment variables.");
+        database.getCollection(collectionName).insertOne(doc);
 
-        String connectionString = "mongodb+srv://nathanlgermain:" + dbPassword + "@befit.uxd3dmt.mongodb.net/?retryWrites=true&w=majority&appName=BeFit";
-        ServerApi serverApi = ServerApi.builder()
-                .version(ServerApiVersion.V1)
-                .build();
-
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
-                .serverApi(serverApi)
-                .build();
-
-        // Create a new client and connect to the server
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
-            try {
-                // Send a ping to confirm a successful connection
-                database = mongoClient.getDatabase("Befit");
-                database.runCommand(new Document("ping", 1));
-                System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-
-                Document doc = new Document()
-                        .append("_id", new ObjectId())
-                        .append("firstName", u.getFName())
-                        .append("lastName", u.getLName())
-                        .append("email", u.getEmail())
-                        .append("phoneNumber", u.getPhoneNumber())
-                        .append("birthday", u.getBirthday())
-                        .append("startingWeight", u.getStartingWeight())
-                        .append("currentWeight", u.getCurrentWeight())
-                        .append("goalWeight", u.getGoalWeight())
-                        .append("height", u.getHeight())
-                        .append("profilePicture", u.getProfilePicture())
-                        .append("totalTimeInGym", u.getTotalTimeInGym())
-                        .append("totalCaloriesBurned", u.getTotalCaloriesBurned());
-
-                        database.getCollection("Users").insertOne(doc);
-
-            } catch (MongoException e) {
-                e.printStackTrace();
-            }
-        }
+        closeMongoDB();
 
     }
-
-    public static void insertExercise(Exercise e) {
-
-
-
-    }
-
 
 }
