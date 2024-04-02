@@ -22,81 +22,6 @@ public class User {
     private String profilePicture; // string of link
     private int totalTimeInGym; // Seconds
     private int totalCaloriesBurned; // calories
-    //private String[] exercises;
-
-    //region Getters
-
-    // Getter for fName
-    public String getFName() {
-        return fName;
-    }
-
-    // Getter for lName
-    public String getLName() {
-        return lName;
-    }
-
-    // Getter for userName
-    public String getUserName() {
-        return userName;
-    }
-
-    // Getter for email
-    public String getEmail() {
-        return email;
-    }
-
-    // Getter for phoneNumber
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    // Getter for birthDay
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    // Getter for startingWeight
-    public int getStartingWeight() {
-        return startingWeight;
-    }
-
-    // Getter for currentWeight
-    public int getCurrentWeight() {
-        return currentWeight;
-    }
-
-    // Getter for goalWeight
-    public int getGoalWeight() {
-        return goalWeight;
-    }
-
-    // Getter for height
-    public int getHeight() {
-        return height;
-    }
-
-    // Getter for profilePicture
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    // Getter for totalTimeInGym
-    public int getTotalTimeInGym() {
-        return totalTimeInGym;
-    }
-
-    // Getter for totalCaloriesBurned
-    public int getTotalCaloriesBurned() {
-        return totalCaloriesBurned;
-    }
-
-    /*Getter for exercises
-    public String[] getExercises() {
-        return exercises.clone(); // Return a clone to ensure encapsulation
-    } */
-
-    //endregion
 
     //region Setters
 
@@ -165,11 +90,76 @@ public class User {
         this.totalCaloriesBurned = totalCaloriesBurned;
     }
 
-    /*Setter for exercises
-    public void setExercises(String[] exercises) {
-        this.exercises = exercises.clone(); // Clone the array for encapsulation
-    } */
+    //endregion
+
+    //region Getters
+
+    // Getter for fName
+    public String getFName() {
+        return fName;
+    }
+
+    // Getter for lName
+    public String getLName() {
+        return lName;
+    }
+
+    // Getter for userName
+    public String getUserName() {
+        return userName;
+    }
+
+    // Getter for email
+    public String getEmail() {
+        return email;
+    }
+
+    // Getter for phoneNumber
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    // Getter for birthDay
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    // Getter for startingWeight
+    public int getStartingWeight() {
+        return startingWeight;
+    }
+
+    // Getter for currentWeight
+    public int getCurrentWeight() {
+        return currentWeight;
+    }
+
+    // Getter for goalWeight
+    public int getGoalWeight() {
+        return goalWeight;
+    }
+
+    // Getter for height
+    public int getHeight() {
+        return height;
+    }
+
+    // Getter for profilePicture
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    // Getter for totalTimeInGym
+    public int getTotalTimeInGym() {
+        return totalTimeInGym;
+    }
+
+    // Getter for totalCaloriesBurned
+    public int getTotalCaloriesBurned() {
+        return totalCaloriesBurned;
+    }
 
     //endregion
+    
 
 }
