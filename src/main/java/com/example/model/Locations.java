@@ -1,5 +1,7 @@
 package com.example.model;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  * @author NathanaelGermain
@@ -12,7 +14,25 @@ public class Locations {
     private String address; // Street Address
     private String zipCode; // Zip Code
     private String state; // State ex. NY, CA, TX
-    private double rating; // Average rating on location
+    private double rating; // Average rating on location, displayed to second decimal place
+
+    // Default Constructor
+    public Locations(String locationName, String address, String zipCode, String state, double rating) {
+        this.locationName = locationName;
+        this.address = address;
+        this.zipCode = zipCode;
+        this.state = state;
+        this.rating = rating;
+    }
+
+    // Constructor with minimum parameters
+    public Locations(String locationName, String address, String zipCode, String state) {
+        this.locationName = locationName;
+        this.address = address;
+        this.zipCode = zipCode;
+        this.state = state;
+        this.rating = 0;
+    }
 
     //region Setters
 
@@ -71,5 +91,19 @@ public class Locations {
     }
 
     //endregion
+public void insertLocations() {
+
+        Document doc = new Document()
+                        .append("_id", new ObjectId())
+                        .append("locationName", locationName)
+                        .append("address", address)
+                        .append("zipCode", zipCode)
+                        .append("state", state)
+                        .append("rating", rating);
+                         
+        MongoDBConnect.insert(doc, "Locations");
+
+    }
+
 
 }

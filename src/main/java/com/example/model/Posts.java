@@ -2,6 +2,9 @@ package com.example.model;
 
 import java.time.LocalDate;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 /**
  * @author NathanaelGermain
  * 
@@ -13,6 +16,22 @@ public class Posts {
     private String mediaLink; // Link to the photo uploaded
     private LocalDate dateOfPost; // Local Date of user who posted
     private int likes; // Total Likes on post
+
+    // Default Constructor
+    public Posts(String userName, String mediaLink, LocalDate dateOfPost, int likes) {
+        this.userName = userName;
+        this.mediaLink = mediaLink;
+        this.dateOfPost = dateOfPost;
+        this.likes = likes;
+    }
+
+    // Constructor with minimum parameters
+    public Posts(String userName, String mediaLink, LocalDate dateOfPost) {
+        this.userName = userName;
+        this.mediaLink = mediaLink;
+        this.dateOfPost = dateOfPost;
+        this.likes = 0;
+    }
 
     //region Setters
 
@@ -61,5 +80,18 @@ public class Posts {
     }
 
     //endregion
+
+    public void insertPosts() {
+
+        Document doc = new Document()
+                        .append("_id", new ObjectId())
+                        .append("userName", userName)
+                        .append("mediaLink", mediaLink)
+                        .append("dateOfPost", dateOfPost)
+                        .append("likes", likes);
+
+        MongoDBConnect.insert(doc, "Posts");
+
+    }
 
 }
