@@ -22,7 +22,7 @@ public class App extends Application {
 
         //MongoDBConnect.mongoDB();
         
-        scene = new Scene(loadFXML("/com/example/loginPage.fxml"));
+        scene = new Scene(loadFXML("/com/example/loginPage.fxml"),1000,700);
         stage.setScene(scene);
         stage.show();
     }

@@ -12,33 +12,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.view.LoginPageController">
-    <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-            <children>
-                <ImageView fitHeight="615.0" fitWidth="497.0" layoutX="-72.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true" fx:id="fitnessPhoto">
-
-                </ImageView>
-                <Text fill="#53d9ba" layoutX="63.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BeFit">
-                    <font>
-                        <Font name="Arial" size="36.0" />
-                    </font>
-                </Text>
-                <Text fill="#06765c" layoutX="194.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Transform your gym game, track everything, level up life." textAlignment="CENTER" wrappingWidth="274.4854431152344">
-                    <font>
-                        <Font size="30.0" />
-                    </font>
-                </Text>
-            </children>
-        </AnchorPane>
-    </center>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.view.SignUpPageController">
     <right>
         <AnchorPane prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: fff;" BorderPane.alignment="CENTER">
             <children>
                 <VBox alignment="CENTER" layoutX="60.0" layoutY="96.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #64FCD9; -fx-background-radius: 25;">
                     <children>
-                        <Text fill="#325f54" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+                        <Text fill="#325f54" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up">
                             <font>
                                 <Font size="35.0" />
                             </font>
@@ -54,6 +34,14 @@
                                 <Font size="30.0" />
                             </font>
                         </TextField>
+                        <TextField promptText="   Email" style="-fx-font-size: 16; -fx-background-color: white; -fx-background-radius: 25; -fx-border-color: none;">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="25.0" left="50.0" right="50.0" />
+                            </VBox.margin>
+                        </TextField>
                         <PasswordField promptText="   Password" style="-fx-background-color: white; -fx-background-radius: 25; -fx-font-size: 16; -fx-border-color: none;">
                             <opaqueInsets>
                                 <Insets />
@@ -65,18 +53,18 @@
                                 <Font size="30.0" />
                             </font>
                         </PasswordField>
-                        <Button alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Log In" textAlignment="CENTER">
+                        <Button alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Sign up" textAlignment="CENTER">
                             <font>
-                                <Font size="20.0" />
+                                <Font size="17.0" />
                             </font>
-                            <VBox.margin>
-                                <Insets bottom="25.0" />
-                            </VBox.margin>
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
+                            <VBox.margin>
+                                <Insets bottom="25.0" />
+                            </VBox.margin>
                         </Button>
-                        <Text fill="#325f54" strokeType="OUTSIDE" strokeWidth="0.0" text="don’t have an account?">
+                        <Text fill="#325f54" strokeType="OUTSIDE" strokeWidth="0.0" text="already have an account?">
                             <font>
                                 <Font size="15.0" />
                             </font>
@@ -84,9 +72,9 @@
                                 <Insets bottom="25.0" />
                             </VBox.margin>
                         </Text>
-                        <Button onAction="#handleSignInBtnAction" alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Sign up" textAlignment="CENTER">
+                        <Button  fx:id="backToLogInBtn"  onAction="#handleBackToLogInBtnAction" alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Log In" textAlignment="CENTER">
                             <font>
-                                <Font size="20.0" />
+                                <Font size="17.0" />
                             </font>
                             <opaqueInsets>
                                 <Insets />
@@ -97,4 +85,22 @@
             </children>
         </AnchorPane>
     </right>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="615.0" fitWidth="497.0" layoutX="-72.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true" fx:id="fitnessPhoto1">
+                </ImageView>
+                <Text fill="#53d9ba" layoutX="63.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BeFit">
+                    <font>
+                        <Font name="Arial" size="36.0" />
+                    </font>
+                </Text>
+                <Text fill="#06765c" layoutX="194.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" your fitness, your progress,  your best." textAlignment="CENTER" wrappingWidth="274.4854431152344">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+    </center>
 </BorderPane>
