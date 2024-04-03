@@ -16,11 +16,13 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
-
+//been here
     @Override
     public void start(Stage stage) throws IOException {
+
+        //MongoDBConnect.mongoDB();
         
-        scene = new Scene(loadFXML("/com/example/primary.fxml"), 640, 480);
+        scene = new Scene(loadFXML("/com/example/loginPage.fxml"),1000,700);
         stage.setScene(scene);
         stage.show();
     }
