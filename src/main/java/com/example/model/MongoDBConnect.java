@@ -152,12 +152,9 @@ public class MongoDBConnect {
 
         initializeMongoDB();
         MongoCollection<Document> collection = database.getCollection(collectionName);
-        //collection.updateOne(Filters.eq(new ObjectId(id)), Updates.set(key, value));
-
         List<ObjectId> objectIds = ids.stream().map(ObjectId::new).collect(Collectors.toList()); // Convert String Ids to ObjectId
 
         Bson filter = Filters.in("_id", objectIds);
-
         UpdateResult result = collection.updateMany(filter, Updates.set(key, value));
 
         System.out.println("\n\n\nUpdated " + result.getModifiedCount() + " documents.");
