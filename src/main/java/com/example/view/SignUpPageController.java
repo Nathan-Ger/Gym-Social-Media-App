@@ -36,4 +36,24 @@ public class SignUpPageController {
             e.printStackTrace();
         }
     }
+    //todo
+    //(first name and last name)
+    //all caps are not allowed
+    //first letter uppercase
+    //todo
+//    public User(String fName, String lName, String userName, String email) {
+//        this.fName = fName;
+//        this.lName = lName;
+//        this.userName = userName;
+//        this.email = email;
+//        this.phoneNumber = null;
+//        this.birthday = null;
+//        this.startingWeight = 0;
+//        this.goalWeight = 0;
+//        this.height = 0;
+//        this.profilePicture = null;
+//        this.totalTimeInGym = 0;
+//        this.totalCaloriesBurned = 0;
+//    }
+
 }
