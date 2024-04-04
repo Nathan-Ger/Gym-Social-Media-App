@@ -53,9 +53,9 @@
                                 <Font size="30.0" />
                             </font>
                         </PasswordField>
-                        <Button alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Sign up" textAlignment="CENTER">
+                        <Button fx:id="signUpButton" onAction="#handleSignUpBtnAction" alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Sign up" textAlignment="CENTER">
                             <font>
-                                <Font size="17.0" />
+                                <Font size="20.0" />
                             </font>
                             <opaqueInsets>
                                 <Insets />
@@ -64,9 +64,10 @@
                                 <Insets bottom="25.0" />
                             </VBox.margin>
                         </Button>
+
                         <Text fill="#325f54" strokeType="OUTSIDE" strokeWidth="0.0" text="already have an account?">
                             <font>
-                                <Font size="15.0" />
+                                <Font size="20.0" />
                             </font>
                             <VBox.margin>
                                 <Insets bottom="25.0" />
@@ -74,7 +75,7 @@
                         </Text>
                         <Button  fx:id="backToLogInBtn"  onAction="#handleBackToLogInBtnAction" alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Log In" textAlignment="CENTER">
                             <font>
-                                <Font size="17.0" />
+                                <Font size="20.0" />
                             </font>
                             <opaqueInsets>
                                 <Insets />
