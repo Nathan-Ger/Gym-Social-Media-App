@@ -1,9 +1,14 @@
 package com.example.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import jakarta.xml.bind.DatatypeConverter;
 
+import org.apache.commons.codec.binary.Base64;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -90,6 +95,81 @@ public class MongoDBConnect {
         mongoClient.close();
         mongoClient = null; // Sets mongoClient to null so we can make sure it is open/closed
         System.out.println("\n\n\nMongoDB connection closed");
+
+    }
+
+    //endregion
+
+    //region Credentials
+
+    public static void registerUser(String username, String password) {
+
+        byte[] salt = gettingSalty();
+        String hashedPassword = hashPassword(password, salt);
+        Document document = new Document("username", username)
+                                    .append("salt", DatatypeConverter.printHexBinary(salt))
+                                    .append("password", hashedPassword);
+
+        initializeMongoDB();
+                                    
+        database.getCollection("Credentials").insertOne(document);
+
+        closeMongoDB();
+
+    }
+
+    private static String hashPassword(String password, byte[] salt) {
+
+        try {
+
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+            md.update(salt);
+            md.update(password.getBytes("UTF-8"));
+
+            byte[] hashedBytes = md.digest();
+
+            return DatatypeConverter.printHexBinary(hashedBytes);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private static byte[] gettingSalty() {
+
+        byte[] salt = new byte[16];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(salt);
+        return salt;
+
+    }
+
+    public static boolean verifyUserPassword(String username, String password) {
+
+        initializeMongoDB();
+
+        MongoCollection<Document> credentials = database.getCollection("Credentials");
+        Document credential = credentials.find(new Document("username", username)).first();
+
+        closeMongoDB();
+
+        if (credential != null) {
+
+            String storedSalt = credential.getString("salt");
+            String storedPasswordHash = credential.getString("password");
+
+            byte[] saltBytes = DatatypeConverter.parseHexBinary(storedSalt);
+
+            String hashedPassword = hashPassword(password, saltBytes);
+
+            return hashedPassword.equals(storedPasswordHash);
+
+        }
+
+        return false;
 
     }
 
