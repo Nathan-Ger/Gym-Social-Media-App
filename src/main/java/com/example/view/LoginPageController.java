@@ -1,5 +1,7 @@
 package com.example.view;
 
+import org.springframework.stereotype.Controller;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+@Controller
 public class LoginPageController {
     @FXML
     private ImageView fitnessPhoto; // Ensure this matches the FX ID in your FXML file.

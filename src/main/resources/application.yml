@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://nathanlgermain:${MONGO_DB_PASSWORD}@befit.uxd3dmt.mongodb.net/?retryWrites=true&w=majority&appName=BeFit

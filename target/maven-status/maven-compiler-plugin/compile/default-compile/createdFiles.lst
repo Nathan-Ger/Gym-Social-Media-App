@@ -1,0 +1,13 @@
+com\example\model\Reviews.class
+com\example\view\SignUpPageController.class
+com\example\model\Posts.class
+com\example\view\DataFetchController.class
+com\example\model\MongoDBConnect.class
+com\example\model\Exercise.class
+com\example\view\SpringBootMain.class
+com\example\view\LoginPageController.class
+com\example\view\App.class
+com\example\view\PrimaryController.class
+module-info.class
+com\example\model\User.class
+com\example\model\Locations.class
