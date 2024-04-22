@@ -14,5 +14,8 @@
     "express": "^4.19.2",
     "mongodb": "^6.5.0",
     "realm": "^12.7.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
   }
 }
