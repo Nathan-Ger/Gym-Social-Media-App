@@ -1,7 +1,13 @@
-const express = require('express');
+/*const express = require('express');
 const router = express.Router();
 
 const Credentials = require('../models/Credentials.js');
+
+const CredVerification = require('../models/CredVerification.js');
+
+const { v4: uuidv4 } = require('uuid');
+
+require('dotenv').config();
 
 const bcrypt = require('bcrypt');
 
@@ -147,5 +153,76 @@ router.post('/signin', (req, res) => {
     }
 
 })
+
+module.exports = router;*/
+
+const express = require('express');
+const router = express.Router();
+
+const { v4: uuidv4 } = require('uuid');
+
+require('dotenv').config();
+
+const bcrypt = require('bcrypt');
+
+// Import the MongoDB Realm SDK
+const Realm = require('realm');
+
+// Initialize the MongoDB Realm app
+const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
+
+router.post('/login', async (req, res) => {
+    let { email, password } = req.body;
+    email = email.trim();
+    email = email.toLowerCase();
+    password = password.trim();
+
+    try {
+        // Create an email/password credential
+        const credentials = Realm.Credentials.emailPassword(email, password);
+
+        // Log in the user
+        const user = await app.logIn(credentials);
+
+        res.json({
+            status: "SUCCESS",
+            message: "Login successful",
+            data: user
+        });
+    } catch (err) {
+        res.json({
+            status: "FAILED",
+            message: "An error occurred while logging in",
+            data: err
+        });
+    }
+});
+
+router.post('/signup', async (req, res) => {
+    let { email, username, password } = req.body;
+    email = email.trim();
+    email = email.toLowerCase();
+    username = username.trim();
+    username = username.toLowerCase();
+    password = password.trim();
+
+    // ... (rest of your code)
+
+    try {
+        // Register the new user
+        await app.emailPasswordAuth.registerUser({ email, password });
+
+        res.json({
+            status: "SUCCESS",
+            message: "Signup successful"
+        });
+    } catch (err) {
+        res.json({
+            status: "FAILED",
+            message: "An error occurred while creating user",
+            data: err
+        });
+    }
+});
 
 module.exports = router;

@@ -1,14 +1,15 @@
 require('./src/config/db.js');
 
-const cors = require('cors');
 const app = require('express')();
-const port = 3000;
+const port = 5000;
+
+const cors = require('cors');
+app.use(cors());
 
 const CredRouter = require('./src/routes/Credentials.js');
 
 const bodyParser = require('express').json;
 app.use(bodyParser());
-app.use(cors());
 
 app.use('/Credentials', CredRouter);
 
