@@ -17,4 +17,6 @@ class Credentials extends Realm.Object {
       primaryKey: "username",
     };
   }
+
+  export { Credentials };
   
