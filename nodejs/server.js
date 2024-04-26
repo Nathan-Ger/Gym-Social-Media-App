@@ -1,7 +1,7 @@
-require('./src/config/db.js');
+//require('./src/config/db.js');
 
 const app = require('express')();
-const port = 5000;
+const port = 3000;
 
 const cors = require('cors');
 app.use(cors());
