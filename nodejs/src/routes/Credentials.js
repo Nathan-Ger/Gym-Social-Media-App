@@ -1,195 +1,46 @@
-/*const express = require('express');
-const router = express.Router();
+/**
+ * Credentials.js
+ * @author Nathanael Germain
+ *
+ * This script handles user authentication using MongoDB Realm.
+ * It provides routes for user login and signup.
+ */
 
-const Credentials = require('../models/Credentials.js');
-
-const CredVerification = require('../models/CredVerification.js');
-
-const { v4: uuidv4 } = require('uuid');
-
-require('dotenv').config();
-
-const bcrypt = require('bcrypt');
-
-router.post('/signup', (req, res) => {
-    let { email, username, password } = req.body;
-    email = email.trim();
-    email = email.toLowerCase();
-    username = username.trim();
-    username = username.toLowerCase();
-    password = password.trim();
-
-    if (email == "" || username == "" || password == "") {
-        res.json({
-            status: "FAILED",
-            message: "Empty input fields!"
-        });
-    } else if (!/^[a-zA-Z ]+$/.test(username)) {
-        res.json({
-            status: "FAILED",
-            message: "Invalid username format!"
-        });
-    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-        res.json({
-            status: "FAILED",
-            message: "Invalid email format!"
-        });
-    } else if (password.length < 8) {
-        res.json({
-            status: "FAILED",
-            message: "Password is too short!"
-        });
-    } else {
-        Credentials.find({email}).then((result) => {
-            if (result.length) {
-                res.json({
-                    status: "FAILED",
-                    message: "Email already exists!"
-                });
-            } else {
-                Credentials.find({username}).then((result) => {
-                    if (result.length) {
-                        res.json({
-                            status: "FAILED",
-                            message: "Username already exists!"
-                        });
-                    } else {
-                        const saltRounds = 10;
-                        bcrypt.hash(password, saltRounds).then((hashedPassword) => {
-                            const newUser = new Credentials({
-                                email,
-                                username,
-                                password: hashedPassword
-                            });
-                            newUser.save().then(result => {
-                                res.json({
-                                    status: "SUCCESS",
-                                    message: "User created successfully!"
-                                });
-                            }).catch(err => {
-                                res.json({
-                                    status: "FAILED",
-                                    message: "An error occurred at signup!"
-                                });
-                            })
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            res.json({
-                                status: "FAILED",
-                                message: "An error occurred at hashing password!"
-                            });
-                        })
-
-                    }
-                }).catch((err) => {
-                    console.log(err);
-                    res.json({
-                        status: "FAILED",
-                        message: "An error occurred!"
-                    });
-                })
-            }
-        }).catch((err) => {
-            console.log(err);
-            res.json({
-                status: "FAILED",
-                message: "An error occurred!"
-            })
-        })
-
-        
-    }
-})
-
-router.post('/signin', (req, res) => {
-
-    let { email, password } = req.body;
-    email = email.trim();
-    email = email.toLowerCase();
-    password = password.trim();
-
-    if (email == "" || password == "") {
-        res.json({
-            status: "FAILED",
-            message: "Empty input fields!"
-        });
-    } else {
-        Credentials.find({email}).then((data) => {
-            if (data.length) {
-                const hashedPassword = data[0].password;
-                bcrypt.compare(password, hashedPassword).then((result) => {
-                    if (result) {
-                        res.json({
-                            status: "SUCCESS",
-                            message: "User is authenticated!",
-                            data: data
-                        });
-                    } else {
-                        res.json({
-                            status: "FAILED",
-                            message: "Authentication failed!"
-                        });
-                    }
-                }).catch((err) => {
-                    console.log(err);
-                    res.json({
-                        status: "FAILED",
-                        message: "Incorrect Password!"
-                    });
-                })
-            } else {
-                res.json({
-                    status: "FAILED",
-                    message: "User not found!"
-                });
-            }
-        }).catch((err) => {
-            res.json({
-                status: "FAILED",
-                message: "An error occurred!"
-            });
-        })
-    }
-
-})
-
-module.exports = router;*/
-
+// Import express and set up the router
 const express = require('express');
 const router = express.Router();
 
-const { v4: uuidv4 } = require('uuid');
+require('dotenv').config(); // Not used in this script, but can be used to load environment variables from a .env file.
 
-require('dotenv').config();
+const bcrypt = require('bcrypt'); // Not used in this script, but can be used to hash passwords before storing them in the database. Realm does this automatically.
 
-const bcrypt = require('bcrypt');
-
-// Import the MongoDB Realm SDK
+// Import and initialize the MongoDB Realm SDK
 const Realm = require('realm');
-
-// Initialize the MongoDB Realm app
 const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
 
+// Import the User model
+const User = require('../models/User');
+
+// Loggin in function, reduces code duplication
+async function loginUser(email, password) {
+    const credentials = Realm.Credentials.emailPassword(email, password);
+    return await app.logIn(credentials);
+}
+
+// Defined Login Route, will get the email and password passed to it (as a .JSON object) and attempt to log the user in
 router.post('/login', async (req, res) => {
-    let { email, password } = req.body;
-    email = email.trim();
-    email = email.toLowerCase();
-    password = password.trim();
+    let { email, password } = req.body; // Gets email and password from the request body
 
     try {
-        // Create an email/password credential
-        const credentials = Realm.Credentials.emailPassword(email, password);
+        const user = await loginUser(email, password); // Attempts to log the user in
 
-        // Log in the user
-        const user = await app.logIn(credentials);
-
+        // If successful, return a success message
         res.json({
             status: "SUCCESS",
-            message: "Login successful",
-            data: user
+            message: "Login successful"
         });
     } catch (err) {
+        // If an error occurs, return an error message with an error code
         res.json({
             status: "FAILED",
             message: "An error occurred while logging in",
@@ -198,31 +49,49 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Defined Signup Route, will get the email, password, and username passed to it (as a .JSON object) and attempt to create a new user. If successful, it will also create a new Realm instance for the user to insert data into.
 router.post('/signup', async (req, res) => {
-    let { email, username, password } = req.body;
-    email = email.trim();
-    email = email.toLowerCase();
-    username = username.trim();
-    username = username.toLowerCase();
-    password = password.trim();
-
-    // ... (rest of your code)
+    let { email, password, username } = req.body; // Gets email, password, and username from the request body. These are the required for creating a user and a log-in credential.
 
     try {
-        // Register the new user
+        // Attempt to register a new user, email is automatically authorized.
         await app.emailPasswordAuth.registerUser({ email, password });
 
+        // If successful, return a success message
         res.json({
             status: "SUCCESS",
             message: "Signup successful"
         });
+
+        try {
+        const user = await loginUser(email, password); // Attempts to log the user in
+
+        // If successful login, return a success message
+        res.json({
+            status: "SUCCESS",
+            message: "Login successful"
+        });
+        } catch (err) {
+            // If an error occurs, return an error message with an error code
+            res.json({
+                status: "FAILED",
+                message: "An error occurred while logging in",
+                data: err
+            });
+        }
+
     } catch (err) {
+        // If an error occurs, return an error message with an error code
         res.json({
             status: "FAILED",
-            message: "An error occurred while creating user",
+            message: "An error occurred while signing up",
             data: err
         });
     }
 });
 
+
+
+
+// Module export
 module.exports = router;

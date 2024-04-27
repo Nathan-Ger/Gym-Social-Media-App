@@ -10,3 +10,7 @@ target/classes/com/example/view/PrimaryController.class
 target/classes/com/example/view/SignUpPageController.class
 target/classes/module-info.class
 nodejs/.env
+target/classes/module-info.class
+target/classes/com/example/view/App.class
+target/classes/com/example/view/PrimaryController.class
+target/classes/com/example/viewmodel/ServerViewModel.class
