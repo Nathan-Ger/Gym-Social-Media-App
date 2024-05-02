@@ -7,7 +7,11 @@ module com.example {
     requires jakarta.xml.bind;
     requires jakarta.activation;
     requires org.apache.commons.codec;
-    
+    requires java.net.http;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.annotation;
+    requires org.json;
 
     opens com.example.view to javafx.fxml;
     exports com.example.view;

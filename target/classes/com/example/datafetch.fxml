@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #00160A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.view.DataFetchController">
+    <left>
+        <AnchorPane style="-fx-background-color: #00160A;" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="338.0" fitWidth="544.0" layoutX="6.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true" fx:id="searchingPhoto">
+
+                </ImageView>
+                <Text fill="WHITE" layoutX="64.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One More Tiny Step to Enter Your Journey" wrappingWidth="305.568359375">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+    </left>
+    <right>
+        <VBox alignment="CENTER" prefHeight="700.0" prefWidth="524.0" style="-fx-background-radius: 25; -fx-background-color: white;" BorderPane.alignment="CENTER">
+            <effect>
+                <DropShadow height="0.0" offsetX="3.0" offsetY="3.0" radius="8.415" width="35.66">
+                    <color>
+                        <Color opacity="0.6641221642494202" />
+                    </color>
+                </DropShadow>
+            </effect>
+            <BorderPane.margin>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </BorderPane.margin>
+            <children>
+                <HBox alignment="CENTER" prefHeight="68.0" prefWidth="492.0">
+                    <children>
+                        <TextField fx:id="firstNameTextField" prefHeight="35.0" prefWidth="240.0" promptText="First name" style="-fx-background-color: white; -fx-border-color: #325F54; -fx-border-radius: 25; -fx-border-width: 2; -fx-font-size: 15;" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="68.0" prefWidth="492.0">
+                    <children>
+                        <TextField fx:id="lastNameTextField" prefHeight="35.0" prefWidth="240.0" promptText="Last Name" style="-fx-background-color: white; -fx-border-color: #325F54; -fx-border-radius: 25; -fx-border-width: 2; -fx-font-size: 15;" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="68.0" prefWidth="492.0">
+                    <children>
+                        <TextField fx:id="phoneNumberTextField" prefHeight="35.0" prefWidth="240.0" promptText="Phone Number" style="-fx-background-color: white; -fx-border-color: #325F54; -fx-border-radius: 25; -fx-border-width: 2; -fx-font-size: 15;" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="68.0" prefWidth="492.0">
+                    <children>
+                        <TextField fx:id="weightTextField" prefHeight="35.0" prefWidth="240.0" promptText="Your Weight" style="-fx-background-color: white; -fx-border-color: #325F54; -fx-border-radius: 25; -fx-border-width: 2; -fx-font-size: 15;" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="68.0" prefWidth="492.0">
+                    <children>
+                        <TextField fx:id="heightTextField" prefHeight="35.0" prefWidth="240.0" promptText="Your Height" style="-fx-background-color: white; -fx-border-color: #325F54; -fx-border-radius: 25; -fx-border-width: 2; -fx-font-size: 15;" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="68.0" prefWidth="492.0">
+                    <children>
+                        <Button fx:id="startJourneyButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="240.0" style="-fx-background-color: #325F54; -fx-text-fill: white; -fx-background-radius: 25; -fx-font-size: 15;" text="Start The Journey" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </right>
+</BorderPane>
