@@ -49,8 +49,6 @@ public class ServerViewModel {
                     e.printStackTrace();
                 }
             }).start();
-
-            // Rest of your code...
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,11 +64,60 @@ public class ServerViewModel {
         }
     }
 
-    public static void HTTPRequest() {
+    public static void HTTPRequests() {
+
+        // TODO: Create JSON Objects for all types of information we need to change.
+        // Also create (inside the method) to actually pass the information to the postHTTPRequest method.
+        
+        /* Methods for users
+         *
+         * We need to be able to change all of the below
+         * fName - String
+         * lName - String
+         * username - String
+         * phoneNumber - String
+         * startingWeight - double
+         * currentWeight - double
+         * goalWeight - double
+         * height - double
+         * profilePicture - String
+         * totalTimeInGym - double
+         * totalCaloriesBurned - double
+         */
+
+        /* Methods for Exercises
+         *
+         * We need to be able to change all of the below
+         * username - String
+         * caloriesBurned - double
+         */
+
+        /* Methods for Posts
+         *
+         * We need to be able to change all of the below
+         * username - String
+         * caption - String
+         * likes - int
+         */
+
+        /* Methods for Locations
+         *
+         * We need to be able to change all of the below
+         * averageRating - double
+         * posts - Reviews[] <-- Ignore this one for now
+         */
+
+        /* Methods for Reviews
+         *
+         * We need to be able to change all of the below
+         * username - String
+         * rating - double
+         * review - String
+         */
+
+        // Below is an example of a login data being made.
+
         try {
-            
-            // Create an HttpClient
-            HttpClient client = HttpClient.newHttpClient();
             
             // Create a JSON string with the login data
             String loginData = new JSONObject()
@@ -78,28 +125,55 @@ public class ServerViewModel {
                 .put("password", "Angrybirds4fun!!")
                 .put("username", "nathanlgermain")
                 .toString();
-            
+
+            postHTTPRequest(loginData, "/credentials/login");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    // data is the JSON data we create. endpoint is the endpoint we want to send the data to.
+    // endpoint should always start with a forward slash. then the file name, which should be the object you are sending to, then the method.
+    // For example, if we are sending a login request, the endpoint should be "/credentials/login"
+    // For changing a users name, it should be "/users/changeName".
+    public static void postHTTPRequest(String data, String endpoint) {
+
+        if (!serverRunning) {
+            System.out.println("Server is not running.");
+            return;
+        }
+
+        try {
+
+            // Create an HttpClient
+            HttpClient client = HttpClient.newHttpClient();
+
             // Create a HttpRequest for the login
-            HttpRequest loginRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:" + port + "/credentials/signup"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(loginData))
-                .build();
-            
-            // Send the login request and get the response
+            HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:" + port + endpoint))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(data))
+            .build();
+
+            // Send the request and get the response.
             try {
-                HttpResponse<String> loginResponse = client.send(loginRequest, HttpResponse.BodyHandlers.ofString());
+                HttpResponse<String> loginResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
                 // Get the response content
                 String responseContent = loginResponse.body();
-                System.out.println(responseContent);
+                System.out.println(responseContent); // TODO: For now we just print the response. Let Nathan Change this.
             } catch (IOException | InterruptedException e) {
                 System.out.println("Error while logging in: " + e.getMessage());
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            stopServer();
         }
+    }
+
+    public static void closeServer() {
+        serverRunning = false;
+        stopServer();
     }
 
 }
