@@ -70,7 +70,7 @@
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="68.0" prefWidth="492.0">
                     <children>
-                        <Button fx:id="startJourneyButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="240.0" style="-fx-background-color: #325F54; -fx-text-fill: white; -fx-background-radius: 25; -fx-font-size: 15;" text="Start The Journey" />
+                        <Button  onAction="#handleDashBtnAction" fx:id="startJourneyButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="240.0" style="-fx-background-color: #325F54; -fx-text-fill: white; -fx-background-radius: 25; -fx-font-size: 15;" text="Start The Journey" />
                     </children>
                 </HBox>
             </children>
