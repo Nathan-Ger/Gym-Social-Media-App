@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+<div id="map" style="width: 690px; height: 540px;"></div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map', {
+        center: [51.505, -0.09],
+        zoom: 13,
+        layers: [
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            })
+        ]
+    });
+
+    map.on('tileerror', function(error, tile) {
+        console.log("Tile loading error:", error, tile);
+    });
+</script>
+</body>
+</html>

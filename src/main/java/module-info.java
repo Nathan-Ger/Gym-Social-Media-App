@@ -4,7 +4,8 @@ module com.example {
     requires org.mongodb.bson;
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.driver.core;
-    
+    requires javafx.web;
+
 
     opens com.example.view to javafx.fxml;
     exports com.example.view;

@@ -42,6 +42,12 @@
             <version>0.4.0</version>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>21</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
@@ -67,10 +73,17 @@
                     <groupId>org.openjfx</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
-            </exclusions> 
+            </exclusions>
         </dependency>
-        
+
     </dependencies>
+    <repositories>
+        <repository>
+            <id>teamdev</id>
+            <url>https://maven.teamdev.com/repository/products</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>

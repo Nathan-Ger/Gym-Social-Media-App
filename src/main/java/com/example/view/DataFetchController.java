@@ -1,10 +1,16 @@
 package com.example.view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class DataFetchController {
 /*    Here are the fx:id values you can use in your controller:
@@ -50,5 +56,19 @@ public class DataFetchController {
 
     //make sure phone num, weight and height only takes a integer and double, if so cacth it and display to the user
 
+    @FXML
+    private void handleDashBtnAction(ActionEvent event) {
+        try {
+            // Load the sign-up page FXML
+            Parent dashboardPageParent = FXMLLoader.load(getClass().getResource("/com/example/dashboard.fxml"));
+            Scene dashboardPageScene = new Scene(dashboardPageParent);
 
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(dashboardPageScene);
+            window.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
