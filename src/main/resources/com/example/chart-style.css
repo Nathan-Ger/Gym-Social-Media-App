@@ -1,0 +1,52 @@
+/* chart title */
+.chart-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* specifically by targeting the axis-tick-label class */
+.axis .axis-tick-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+/* Styling for all bars in the first data series */
+.chart-bar series1 {
+    -fx-bar-fill: linear-gradient(to right, #7ec0ee, #4682b4);
+    -fx-background-radius: 10, 10, 0, 0; /* Top corners rounded */
+}
+
+/* Styling for all bars in the second data series (example) */
+.chart-bar series2 {
+    -fx-bar-fill: linear-gradient(to right, #32cd32, #228b22);
+    -fx-background-radius: 10, 10, 0, 0; /* Top corners rounded */
+}
+
+/* Set the corner radius for all bars if they should have the same style */
+.chart-bar {
+    -fx-background-radius: 10, 10, 0, 0; /* Adjust as needed */
+}
+
+/* Make the chart background transparent */
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.chart-title {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Hover effect  */
+.button:hover {
+    -fx-background-color: black;  /* Light gray color on hover */
+    -fx-cursor: hand;               /* Change cursor to a pointer */
+}

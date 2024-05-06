@@ -31,10 +31,8 @@ public class SignUpPageController {
             Parent loginPageParent = FXMLLoader.load(getClass().getResource("/com/example/loginPage.fxml"));
             Scene loginPageScene = new Scene(loginPageParent);
 
-            // Get the stage from the event that triggered the action
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-            // Set the scene on the stage to switch to the login page
             window.setScene(loginPageScene);
             window.show();
         } catch (Exception e) {
@@ -66,12 +64,9 @@ public class SignUpPageController {
             //if any error with sign user up, let them know.
 
 
-            // Load the DataFetch page FXML
             Parent dataFetchPageParent = FXMLLoader.load(getClass().getResource("/com/example/datafetch.fxml"));
             Scene dataFetchPageScene = new Scene(dataFetchPageParent);
-            // Get the stage from the event that triggered the action
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            // Set the scene on the stage to switch to the DataFetch page
             window.setScene(dataFetchPageScene);
             window.show();
         } catch (Exception e) {

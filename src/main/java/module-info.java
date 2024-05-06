@@ -4,6 +4,7 @@ module com.example {
     requires org.mongodb.bson;
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.driver.core;
+    requires javafx.web;
     requires jakarta.xml.bind;
     requires jakarta.activation;
     requires org.apache.commons.codec;
