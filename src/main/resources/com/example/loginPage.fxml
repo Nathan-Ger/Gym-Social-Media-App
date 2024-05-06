@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -12,12 +11,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.view.LoginPageController">
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fitHeight="615.0" fitWidth="497.0" layoutX="-72.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true" fx:id="fitnessPhoto">
+                <ImageView fx:id="fitnessPhoto" fitHeight="615.0" fitWidth="497.0" layoutX="-72.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
 
                 </ImageView>
                 <Text fill="#53d9ba" layoutX="63.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BeFit">
@@ -46,7 +44,7 @@
                                 <Insets bottom="30.0" />
                             </VBox.margin>
                         </Text>
-                        <TextField promptText="   User Name" style="-fx-font-size: 16; -fx-background-color: white; -fx-background-radius: 25; -fx-border-color: none;">
+                        <TextField fx:id="userLogin" promptText="   User Name" style="-fx-font-size: 16; -fx-background-color: white; -fx-background-radius: 25; -fx-border-color: none;">
                             <VBox.margin>
                                 <Insets bottom="25.0" left="50.0" right="50.0" />
                             </VBox.margin>
@@ -54,7 +52,7 @@
                                 <Font size="30.0" />
                             </font>
                         </TextField>
-                        <PasswordField promptText="   Password" style="-fx-background-color: white; -fx-background-radius: 25; -fx-font-size: 16; -fx-border-color: none;">
+                        <PasswordField fx:id="pwLogin" promptText="   Password" style="-fx-background-color: white; -fx-background-radius: 25; -fx-font-size: 16; -fx-border-color: none;">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
@@ -84,7 +82,7 @@
                                 <Insets bottom="25.0" />
                             </VBox.margin>
                         </Text>
-                        <Button onAction="#handleSignInBtnAction" alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Sign up" textAlignment="CENTER">
+                        <Button alignment="CENTER" graphicTextGap="0.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSignInBtnAction" prefHeight="29.0" prefWidth="102.0" style="-fx-background-color: #FFF9B0; -fx-background-radius: 20; -fx-text-fill: #325F54;" text="Sign up" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>

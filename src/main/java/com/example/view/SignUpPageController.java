@@ -6,11 +6,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class SignUpPageController {
+
+    // fx id for sign up page user, email & password
+    @FXML
+    private TextField userSignup;
+    @FXML
+    private TextField emailSignup;
+    @FXML
+    private PasswordField pwSignup;
+
     @FXML
     private ImageView fitnessPhoto1; // Ensure this matches the FX ID in your FXML file.
 
@@ -59,26 +71,71 @@ public class SignUpPageController {
      */
     @FXML
     private void handleSignUpBtnAction(ActionEvent event) {
-        try {
-            //todo
-            //write data to the database, then let user go the datafetch scene,
-            //if the user already exist, let them know.
-            //if any error with sign user up, let them know.
 
+        // praj
+        // gets user, email, password
+        String username = userSignup.getText();
+        String email = emailSignup.getText();
+        String password = pwSignup.getText();
 
-            // Load the DataFetch page FXML
-            Parent dataFetchPageParent = FXMLLoader.load(getClass().getResource("/com/example/datafetch.fxml"));
-            Scene dataFetchPageScene = new Scene(dataFetchPageParent);
-            // Get the stage from the event that triggered the action
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            // Set the scene on the stage to switch to the DataFetch page
-            window.setScene(dataFetchPageScene);
-            window.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // alerts for if texts are not valid
+        if (!validUsername(username)) {
+            showAlert("Invalid Username", "Username must start with a capital letter and can only contain letters, numbers, period, and underscore and have no spaces");
+        } else if (!validEmail(email)) {
+            showAlert("Invalid Email", "Please enter a valid email address Ex: example@gmail.com ");
+        } else if (password.length() < 8) {
+            showAlert("Invalid Password", "Password should be at least 8 characters long");
+        } else if (!strongPassword(password)) {
+            showAlert("Weak Password", "Password should contain at least one uppercase letter, one lowercase letter, one digit, and one special character");
+        } else {
+
+            try {
+                //todo
+                //write data to the database, then let user go the datafetch scene,
+                //if the user already exist, let them know.
+                //if any error with sign user up, let them know.
+
+                // Load the DataFetch page FXML
+                Parent dataFetchPageParent = FXMLLoader.load(getClass().getResource("/com/example/datafetch.fxml"));
+                Scene dataFetchPageScene = new Scene(dataFetchPageParent);
+                // Get the stage from the event that triggered the action
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                // Set the scene on the stage to switch to the DataFetch page
+                window.setScene(dataFetchPageScene);
+                window.show();
+            } catch (Exception e) {
+                e.printStackTrace();}
         }
     }
 
+    // praj
+    // isvalidusername gets called in handleSignUpBtnAction to check
+    private boolean validUsername(String username) {
+        if (username.isEmpty() || !Character.isUpperCase(username.charAt(0))) {
+            return false; // cehcks for uppercase
+        }
+        for (char c : username.toCharArray()) { //checks for _ or .
+            if (!Character.isLetterOrDigit(c) && c != '.' && c != '_') {
+                return false;}
+        }
+        return true;
+    }
+    //checks for valid email
+    private boolean validEmail(String email) {
+        return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+    }
+    //checks for valid password
+    private boolean strongPassword(String password) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$");
+    }
 
+
+    // alert methods / gets called
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 }
