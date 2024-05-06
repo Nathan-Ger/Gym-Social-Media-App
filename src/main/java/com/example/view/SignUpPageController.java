@@ -72,8 +72,10 @@ public class SignUpPageController {
     @FXML
     private void handleSignUpBtnAction(ActionEvent event) {
 
-        // praj
-        // gets user, email, password
+        /**
+         * @author Prajwol Shrestha
+         * gets user, email, password
+         */
         String username = userSignup.getText();
         String email = emailSignup.getText();
         String password = pwSignup.getText();
@@ -108,28 +110,42 @@ public class SignUpPageController {
         }
     }
 
-    // praj
-    // isvalidusername gets called in handleSignUpBtnAction to check
+    /**
+     * @author Prajwol Shrestha
+     * @param username
+     * @return
+     * isvalidusername gets used in handleSignUpBtnAction
+     * and more validation for email & password
+     */
     private boolean validUsername(String username) {
+        // this basiclly says is username field is empty or the first chatacter (0) is not uppercase then its invalid
         if (username.isEmpty() || !Character.isUpperCase(username.charAt(0))) {
             return false; // cehcks for uppercase
         }
-        for (char c : username.toCharArray()) { //checks for _ or .
+        for (char c : username.toCharArray()) {
+            // this checks for _ or .
             if (!Character.isLetterOrDigit(c) && c != '.' && c != '_') {
                 return false;}
         }
         return true;
     }
-    //checks for valid email
+    // praj
+    // checks for valid email
     private boolean validEmail(String email) {
+        // 1st bracket is allowing any letter and number, period, perecent,plus and hyphen
+        // +@ is saying has to have @ and 2nd bracket is same as first but no percent or plus
+        // +\\. is saying has a period and last bracket is saying any letters with min of 2 characters
         return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
     }
-    //checks for valid password
+    // praj
+    // checks for valid password
     private boolean strongPassword(String password) {
+        // in short makes sure it has AT LEAST 1 number, 1 lowercase, 1 uppercase, 1 of [@#$%^&+=!], no white spaces
+        // and at least 8 characters
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$");
     }
 
-
+    // praj
     // alert methods / gets called
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);

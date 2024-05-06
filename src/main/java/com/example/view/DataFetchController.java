@@ -52,18 +52,21 @@ public class DataFetchController {
     //make sure first name and last name are just strings and make sure phone num takes an integer and height takes an integer, weight only takes a double, if so cacth it and display to the user
 
 
-
-
-
-    // praj
-    // when start button clicked
+    /**
+     * @author Prajwol Shrestha
+     * for when start button clicked
+     */
     @FXML
     private void startJourneyButton() {
         if (checkFields()) {
             showAlert(Alert.AlertType.INFORMATION, "Validation Success", "All fields are valid.");
         }
     }
-    // gets inputs
+
+    /**
+     * @author Prajwol Shrestha
+     * gets inputs
+     */
     private boolean checkFields() {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -71,14 +74,17 @@ public class DataFetchController {
         String weight = weightTextField.getText();
         String height = heightTextField.getText();
 
-        // validatse phone number, weight, & height
+        /**
+         *  @author Prajwol Shrestha
+         *  validatse phone number, weight, & height
+         */
         try {
             // phone # should be an int and weight and height are doubles
             int parsedPhoneNumber = Integer.parseInt(phoneNumber);
             double parsedWeight = Double.parseDouble(weight);
 
-            String[] heightParts = height.split("'");
-            if (heightParts.length != 2) {                              // validates "5'11"
+            String[] heightParts = height.split("'"); // checks for ' so exmpl: validates "5'11
+            if (heightParts.length != 2) {
                 throw new NumberFormatException("Invalid height format");
             }
             double parsedHeightFeet = Double.parseDouble(heightParts[0]); // for geight ( ' )
@@ -86,14 +92,18 @@ public class DataFetchController {
 
             return true; // if fields are valid
 
+        /**
+         * @author Prajwol Shrestha
+         * the alerts for if texts are invalid
+         */
         } catch (NumberFormatException e) {
             if (e.getMessage().equals("Invalid height format")) { //if height is ivalid
                 showAlert(Alert.AlertType.ERROR, "Invalid Height Format", "Height should be in feet & inches format (5'10)");
             }
-            else if (phoneNumber.matches("\\D+")) { // if # is invalid
+            else if (phoneNumber.matches("\\D+")) { // D is any non digit so if phone # is invalid like abc
                 showAlert(Alert.AlertType.ERROR, "Invalid Phone Number", "Phone number should be a valid integer; 123");
             }
-            else if (weight.matches("[^0-9]+")) { // if weight is invalid
+            else if (weight.matches("[^0-9]+")) { // ^ means anything not in "0-9" so weight would be invalid
                 showAlert(Alert.AlertType.ERROR, "Invalid Weight", "Weight should be a valid number; 150, 150.5.");
             }
             else { // if another reason of being invalid
@@ -102,6 +112,13 @@ public class DataFetchController {
             return false;
         }
     }
+
+    /**
+     * @author Prajwol Shrestha
+     * @param alertType
+     * @param title
+     * @param message
+     */
     // alert method / gets called
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
