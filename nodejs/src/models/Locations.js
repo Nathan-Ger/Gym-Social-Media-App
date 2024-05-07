@@ -1,36 +1,36 @@
 const Realm = require('realm');
+const { primaryKey } = require('./Exercise');
 
 class Locations extends Realm.Object {
     static schema = {
         name: "Locations",
+        primaryKey: "_id",
         properties: {
             _id: { type: "objectId", default: () => new Realm.BSON.ObjectId()},
-            locationName: {type: "string", required: true},
-            address: {type: "string", required: true},
-            city: {type: "string", required: true},
-            state: {type: "string", required: true},
-            zipCode: {type: "string", required: true},
+            locationName: "string",
+            address: "string",
+            city: "string",
+            state: "string",
+            zipCode: "string",
             averageRating: {type: "double", default: 0},
-            posts: "Reviews[]",
+            posts: {type: "Reviews[]", default: [] },
         },
-        primaryKey: "_id",
     };
 }
 
 class Reviews extends Realm.Object {
     static schema = {
         name: "Reviews",
+        primaryKey: "_id",
         properties: {
             _id: { type: "objectId", default: () => new Realm.BSON.ObjectId()},
-            username: {type: "string", required: true},
-            rating: {type: "double", required: true},
-            review: "string",
+            email: "string",
+            rating: "double",
+            review: "string?",
             createdAt: {type: "date", default: () => new Date()},
             location: "Locations",
         },
-        primaryKey: "_id",
     };
 }
-
 
 module.exports = { Locations, Reviews };

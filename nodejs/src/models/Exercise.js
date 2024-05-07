@@ -3,19 +3,19 @@ const Realm = require('realm');
 class Exercise extends Realm.Object {
     static schema = {
         name: "Exercise",
+        primaryKey: "_id",
         properties: {
             _id: { type: "objectId", default: () => new Realm.BSON.ObjectId()},
-            username: {type: "string", required: true},
-            exerciseName: {type: "string", required: true},
-            lifted: {type: Boolean, required: true},
-            weight: "double",
-            sets: "int",
-            timeSpent: "double",
-            dateOfWorkout: {type: "date", default: () => new Date()},
-            caloriesBurned: "double",
-            miles: "double",
+            email: "string",
+            exerciseName: "string",
+            lifted: "bool",
+            weight: "double?",
+            sets: "int?",
+            timeSpent: "double?",
+            dateOfWorkout: "date?",
+            caloriesBurned: "double?",
+            miles: "double?",
         },
-        primaryKey: "_id",
     };
 }
 

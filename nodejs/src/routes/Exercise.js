@@ -22,43 +22,60 @@ const Realm = require('realm');
 const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
 
 // Import the User model
-const User = require('../models/User');
+const Exercise = require('../models/Exercise');
 
-router.post('/createUser', async (req, res) => {
-    let { email, username } = req.body; // Gets email and password from the request body
+router.post('/createExercise', async (req, res) => {
+    let { exerciseName, lifted, weight, sets, timeSpent, dateOfWorkout, caloriesBurned, miles } = req.body;
 
-    // Verify that the current user's email matches the email provided in the request
-    if (app.currentUser && app.currentUser.profile.email !== email) {
-        return res.status(403).json({
-            status: "FAILED",
-            message: "Unauthorized: Email does not match the authenticated user."
-        });
-    }
+    console.log("Exercise Name: ", exerciseName, "Lifted: ", lifted, "Weight: ",
+        weight, "Sets: ", sets, "Time Spent: ", timeSpent, "Date of Workout: ",
+        dateOfWorkout, "Calories Burned: ", caloriesBurned, "Miles: ", miles);
+
+    // Below field are not required.
+    lifted = lifted || false;
+    weight = weight || 0;
+    sets = sets || 0;
+    timeSpent = timeSpent || 0;
+    //dateOfWorkout = parseDate(dateOfWorkout) || new Date();
+    caloriesBurned = caloriesBurned || 0;
+    miles = miles || 0;
+
+    console.log("Exercise Name: ", exerciseName, "Lifted: ", lifted, "Weight: ",
+        weight, "Sets: ", sets, "Time Spent: ", timeSpent, "Date of Workout: ",
+        dateOfWorkout, "Calories Burned: ", caloriesBurned, "Miles: ", miles);
 
     let realm;
     try {
 
         realm = await openRealm(app.currentUser);
 
-        const newUser = realm.write(() => {
-            return realm.create(User, {
-                email: email,
-                username: username,
-                createdAt: new Date(),
+
+        let newExercise;
+        realm.write(() => {
+            newExercise = realm.create(Exercise, {
+                email: app.currentUser.profile.email,
+                exerciseName: exerciseName,
+                lifted: lifted,
+                weight: weight,
+                sets: sets,
+                timeSpent: timeSpent,
+                dateOfWorkout: dateOfWorkout,
+                caloriesBurned: caloriesBurned,
+                miles: miles
             });
         });
 
         res.json({
             status: "SUCCESS",
-            message: "User doc created successfully",
-            data: newUser
+            message: "Exercise doc created successfully",
+            data: newExercise
         });
 
     } catch (err) {
         // If an error occurs, return an error message with an error code
         res.status(500).json({
             status: "FAILED",
-            message: "An error occurred while creating a user doc",
+            message: "An error occurred while creating an exercise doc",
             data: err,
             error: err.message
         });
@@ -89,7 +106,7 @@ router.post('/updateUser', async (req, res) => {
         }
 
         if (field == "birthday") {
-            birthday = parseDate(newValue);
+            birthday = parseEmail(newValue);
             realm.write(() => {
                 user[field] = birthday;
             });
@@ -122,7 +139,7 @@ router.post('/updateUser', async (req, res) => {
 
 });
 
-// Parses an date string into a Date object using the format MMDDYYYY
+// Parses an datre string into a Date object using the format MMDDYYYY
 function parseDate(dateString) {
     const month = dateString.substring(0, 2) - 1;
     const day = dateString.substring(2, 4);

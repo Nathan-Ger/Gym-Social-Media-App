@@ -21,6 +21,9 @@ app.use('/Credentials', CredRouter);
 const UserRouter = require('./src/routes/User.js');
 app.use('/User', UserRouter);
 
+const ExerciseRouter = require('./src/routes/Exercise.js');
+app.use('/Exercise', ExerciseRouter);
+
 // Defined port range.
 const startPort = 3000;
 const endPort = 3100;
