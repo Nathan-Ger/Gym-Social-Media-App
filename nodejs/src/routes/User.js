@@ -78,33 +78,28 @@ router.post('/updateUser', async (req, res) => {
 
         realm = await openRealm(app.currentUser);
         const user = realm.objects("User")[0];
-        console.log("User: ", user)
+        console.log("User: ", user);
 
         // None of the below should ever be changed.
-        if (field == "_id" || field == "createdAt" || field == "email") {
+        if (field == "createdAt" || field == "email") {
             return res.status(400).json({
                 status: "FAILED",
                 message: field + " cannot be updated"
             });
-        }
-
-        if (field == "birthday") {
+        } else if (field == "birthday") {
             birthday = parseDate(newValue);
             realm.write(() => {
                 user[field] = birthday;
             });
-        }
-
-        if (field == "totalTimeInGym" || field == "totalCaloriesBurned") {
+        } else if (field == "totalTimeInGym" || field == "totalCaloriesBurned") {
             // TODO: Add code to take the new value and use it + the current value to make the new value.
+        } else {
+            realm.write(() => {
+                if (user[field] != undefined) {
+                    user[field] = newValue;
+                }
+            });
         }
-
-        // All edits outside of above conditions
-        realm.write(() => {
-            if (user[field] != undefined) {
-                user[field] = newValue;
-            }
-        });
 
         res.json({
             status: "SUCCESS",
@@ -124,6 +119,9 @@ router.post('/updateUser', async (req, res) => {
 
 // Parses an date string into a Date object using the format MMDDYYYY
 function parseDate(dateString) {
+    if (typeof dateString !== 'string' || dateString.length !== 8 || isNaN(dateString)) {
+        throw new Error('Invalid date string. Expected format is MMDDYYYY.');
+    }
     const month = dateString.substring(0, 2) - 1;
     const day = dateString.substring(2, 4);
     const year = dateString.substring(4, 8);

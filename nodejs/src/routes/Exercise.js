@@ -27,22 +27,14 @@ const Exercise = require('../models/Exercise');
 router.post('/createExercise', async (req, res) => {
     let { exerciseName, lifted, weight, sets, timeSpent, dateOfWorkout, caloriesBurned, miles } = req.body;
 
-    console.log("Exercise Name: ", exerciseName, "Lifted: ", lifted, "Weight: ",
-        weight, "Sets: ", sets, "Time Spent: ", timeSpent, "Date of Workout: ",
-        dateOfWorkout, "Calories Burned: ", caloriesBurned, "Miles: ", miles);
-
     // Below field are not required.
     lifted = lifted || false;
     weight = weight || 0;
     sets = sets || 0;
     timeSpent = timeSpent || 0;
-    //dateOfWorkout = parseDate(dateOfWorkout) || new Date();
+    dateOfWorkout = dateOfWorkout || new Date();
     caloriesBurned = caloriesBurned || 0;
     miles = miles || 0;
-
-    console.log("Exercise Name: ", exerciseName, "Lifted: ", lifted, "Weight: ",
-        weight, "Sets: ", sets, "Time Spent: ", timeSpent, "Date of Workout: ",
-        dateOfWorkout, "Calories Burned: ", caloriesBurned, "Miles: ", miles);
 
     let realm;
     try {
