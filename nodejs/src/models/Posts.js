@@ -6,11 +6,12 @@ class Posts extends Realm.Object {
         primaryKey: "_id",
         properties: {
             _id: { type: "objectId", default: () => new Realm.BSON.ObjectId()},
+            _idString: "string",
             email: "string",
             mediaLink: "string",
             caption: "string?",
-            createdAt: {type: "date", default: () => new Date()},
-            likes: { type: "int", default: 0 },
+            createdAt: "date?",
+            likes: "int?",
         },
     };
 }

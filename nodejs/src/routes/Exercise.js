@@ -41,6 +41,12 @@ router.post('/createExercise', async (req, res) => {
 
         realm = await openRealm(app.currentUser);
 
+        await realm.subscriptions.update((mutableSubs) => {
+            mutableSubs.add(realm.objects("Exercise"), {
+                name: "all-exercises",
+                update: true,
+            });
+        });
 
         let newExercise;
         realm.write(() => {
@@ -77,8 +83,8 @@ router.post('/createExercise', async (req, res) => {
 
 });
 
-router.post('/updateUser', async (req, res) => {
-    let { field, newValue } = req.body;
+router.post('/updateExercise', async (req, res) => {
+    let { exerciseId, field, newValue } = req.body;
 
     field = field.toLowerCase();
 
@@ -86,38 +92,48 @@ router.post('/updateUser', async (req, res) => {
     try {
 
         realm = await openRealm(app.currentUser);
-        const user = realm.objects("User")[0];
-        console.log("User: ", user)
+
+        await realm.subscriptions.update((mutableSubs) => {
+            mutableSubs.add(realm.objects("Exercise"), {
+                name: "all-exercises",
+                update: true,
+            });
+        });
+
+        const exercise = realm.objects("Exercise").filtered("_idString == $0", exerciseId)[0];
+
+        if (!exercise) {
+            return res.status(400).json({
+                status: "FAILED",
+                message: "Exercise not found"
+            });
+        }
 
         // None of the below should ever be changed.
-        if (field == "_id" || field == "createdAt" || field == "email") {
+        if (field == "email") {
             return res.status(400).json({
                 status: "FAILED",
                 message: field + " cannot be updated"
             });
         }
 
-        if (field == "birthday") {
-            birthday = parseEmail(newValue);
+        if (field == "dateOfWorkout") {
+            dateOfWorkout = parseDate(newValue);
             realm.write(() => {
-                user[field] = birthday;
+                exercise[field] = dateOfWorkout;
             });
-        }
-
-        if (field == "totalTimeInGym" || field == "totalCaloriesBurned") {
-            // TODO: Add code to take the new value and use it + the current value to make the new value.
         }
 
         // All edits outside of above conditions
         realm.write(() => {
-            if (user[field] != undefined) {
-                user[field] = newValue;
+            if (exercise[field] != undefined) {
+                exercise[field] = newValue;
             }
         });
 
         res.json({
             status: "SUCCESS",
-            message: "User " + field + " updated successfully"
+            message: "Exercise " + field + " updated successfully"
         });
     } catch (error) {
         res.status(500).json({
@@ -131,7 +147,7 @@ router.post('/updateUser', async (req, res) => {
 
 });
 
-// Parses an datre string into a Date object using the format MMDDYYYY
+// Parses an date string into a Date object using the format MMDDYYYY
 function parseDate(dateString) {
     const month = dateString.substring(0, 2) - 1;
     const day = dateString.substring(2, 4);

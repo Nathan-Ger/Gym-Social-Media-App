@@ -1,15 +1,13 @@
 const Realm = require('realm');
 const User = require('../models/User'); // Ensure this path is correct for your User model
 const Exercise = require('../models/Exercise'); // Ensure this path is correct for your Exercise model
+const Posts = require('../models/Posts'); // Ensure this path is correct for your Posts model
 
 // Function to open a Realm with a specified user and configuration
 async function openRealm(user) {
-    if (!user) {
-        throw new Error("User must be authenticated to open a Realm.");
-    }
 
     const config = {
-        schema: [User, Exercise], // Ensure the schema is correctly referenced
+        schema: [User, Exercise, Posts], // Ensure the schema is correctly referenced
         sync: {
             user: user,
             flexible: true

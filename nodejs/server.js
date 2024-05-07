@@ -24,6 +24,9 @@ app.use('/User', UserRouter);
 const ExerciseRouter = require('./src/routes/Exercise.js');
 app.use('/Exercise', ExerciseRouter);
 
+const PostsRouter = require('./src/routes/Posts.js');
+app.use('/Posts', PostsRouter);
+
 // Defined port range.
 const startPort = 3000;
 const endPort = 3100;

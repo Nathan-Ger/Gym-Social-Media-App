@@ -1,5 +1,4 @@
 const Realm = require('realm');
-const { primaryKey } = require('./Exercise');
 
 class Locations extends Realm.Object {
     static schema = {
@@ -13,24 +12,9 @@ class Locations extends Realm.Object {
             state: "string",
             zipCode: "string",
             averageRating: {type: "double", default: 0},
-            posts: {type: "Reviews[]", default: [] },
+            reviews: "Locations_reviews[]?",
         },
     };
 }
 
-class Reviews extends Realm.Object {
-    static schema = {
-        name: "Reviews",
-        primaryKey: "_id",
-        properties: {
-            _id: { type: "objectId", default: () => new Realm.BSON.ObjectId()},
-            email: "string",
-            rating: "double",
-            review: "string?",
-            createdAt: {type: "date", default: () => new Date()},
-            location: "Locations",
-        },
-    };
-}
-
-module.exports = { Locations, Reviews };
+module.exports = Locations;

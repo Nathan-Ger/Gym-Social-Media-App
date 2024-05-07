@@ -6,6 +6,7 @@ class Exercise extends Realm.Object {
         primaryKey: "_id",
         properties: {
             _id: { type: "objectId", default: () => new Realm.BSON.ObjectId()},
+            _idString: "string",
             email: "string",
             exerciseName: "string",
             lifted: "bool",

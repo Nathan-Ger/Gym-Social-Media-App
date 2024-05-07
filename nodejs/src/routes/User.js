@@ -117,6 +117,65 @@ router.post('/updateUser', async (req, res) => {
 
 });
 
+router.get('/getUser', async (req, res) => {
+    const field = req.query.field;
+
+    if (!field) {
+        return res.status(400).json({
+            status: "FAILED",
+            message: "No field provided"
+        });
+    }
+
+    const userEmail = app.currentUser.profile.email;
+
+    let realm;
+    try {
+        // Open the realm
+        realm = await openRealm(app.currentUser);
+
+        await realm.subscriptions.update((mutableSubs) => {
+            mutableSubs.add(realm.objects("User"), {
+                name: "user-data",
+                update: true,
+            });
+        });
+
+
+        const userCollection = realm.objects(User);
+
+        const user = userCollection.filtered('email == $0', userEmail)[0];
+        
+        if (!user) {
+            return res.status(404).json({
+                status: "FAILED",
+                message: "User not found.",
+            });
+        }
+
+        const response = {};
+        response[field] = user[field];
+
+        res.json({
+            status: "SUCCESS",
+            message: "Current user's data retrieved successfully",
+            data: response
+        });
+
+    } catch (err) {
+        // Handle any errors that occur during retrieval
+        res.status(500).json({
+            status: "FAILED",
+            message: "An error occurred while retrieving the user's data",
+            error: err.message
+        });
+    } finally {
+        realm = await closeRealm(realm);
+    }
+
+
+});
+
 // Parses an date string into a Date object using the format MMDDYYYY
 function parseDate(dateString) {
     if (typeof dateString !== 'string' || dateString.length !== 8 || isNaN(dateString)) {
