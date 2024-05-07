@@ -10,14 +10,16 @@ import java.net.http.HttpResponse;
 
 import org.json.JSONObject;
 
-public class ServerViewModel {
+public class ServerViewModel
+{
 
     private static Process process = null;
     private static ProcessBuilder processBuilder = new ProcessBuilder("node", "nodejs/server.js");
     private static String port = "";
     private static volatile boolean serverRunning = false;
 
-    public static void startServer() {
+    public static void startServer()
+    {
         
         try {
             process = processBuilder.start();
@@ -62,6 +64,53 @@ public class ServerViewModel {
             process.destroy();
             process = null;
         }
+    }
+
+
+//Author: Gagan
+    // Methods to set user data fields
+    public void setFirstName(JSONObject userData, String fName) {
+        userData.put("fName", fName);
+    }
+
+    public void setLastName(JSONObject userData, String lName) {
+        userData.put("lName", lName);
+    }
+
+    public void setUsername(JSONObject userData, String username) {
+        userData.put("username", username);
+    }
+
+    public void setPhoneNumber(JSONObject userData, String phoneNumber) {
+        userData.put("phoneNumber", phoneNumber);
+    }
+
+    public void setStartingWeight(JSONObject userData, double startingWeight) {
+        userData.put("startingWeight", startingWeight);
+    }
+
+    public void setCurrentWeight(JSONObject userData, double currentWeight) {
+        userData.put("currentWeight", currentWeight);
+    }
+
+    public void setGoalWeight(JSONObject userData, double goalWeight) {
+        userData.put("goalWeight", goalWeight);
+    }
+
+    public void setHeight(JSONObject userData, double height) {
+        userData.put("height", height);
+    }
+
+    public void setProfilePicture(JSONObject userData, String profilePicture) {
+        userData.put("profilePicture", profilePicture);
+    }
+
+    public void setTotalTimeInGym(JSONObject userData, double totalTimeInGym) {
+        userData.put("totalTimeInGym", totalTimeInGym);
+    }
+
+    public void setTotalCaloriesBurned(JSONObject userData, double totalCaloriesBurned) {
+        userData.put("totalCaloriesBurned", totalCaloriesBurned);
     }
 
     public static void HTTPRequests() {
@@ -115,9 +164,35 @@ public class ServerViewModel {
          * review - String
          */
 
+        //Author: Gagan
+        try {
+
+
+            // Create JSON object for exercise data
+            JSONObject exerciseData = new JSONObject()
+                    .put("username", "johndoe")
+                    .put("caloriesBurned", 150.0);
+
+            // Create JSON object for post data
+            JSONObject postData = new JSONObject()
+                    .put("username", "johndoe")
+                    .put("caption", "Having a great workout session!")
+                    .put("likes", 10);
+
+            // Create JSON object for location data
+            JSONObject locationData = new JSONObject()
+                    .put("averageRating", 4.5);
+
+            // Create JSON object for review data
+            JSONObject reviewData = new JSONObject()
+                    .put("username", "johndoe")
+                    .put("rating", 4.0)
+                    .put("review", "Great experience!");
+
+
         // Below is an example of a login data being made.
 
-        try {
+
             
             // Create a JSON string with the login data
             String loginData = new JSONObject()
@@ -126,7 +201,17 @@ public class ServerViewModel {
                 .put("username", "nathanlgermain")
                 .toString();
 
+
+
+            postHTTPRequest(exerciseData.toString(), "/exercises/add");
+            postHTTPRequest(postData.toString(), "/posts/create");
+            postHTTPRequest(locationData.toString(), "/locations/add");
+            postHTTPRequest(reviewData.toString(), "/reviews/add");
+
+
             postHTTPRequest(loginData, "/credentials/login");
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
