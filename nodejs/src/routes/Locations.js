@@ -1,21 +1,10 @@
-/**
- * User.js
- * @author Nathanael Germain
- *
- *
- */
-
 // Import express and set up the router
 const express = require('express');
 const router = express.Router();
 
+// Import the MongoDB Realm SDK and the utilites functions
 const { MongoClient, ObjectId } = require('mongodb');
-
-const { openRealm, closeRealm, findUserByEmail } = require('../utils/realmUtils.js');
-
-require('dotenv').config(); // Not used in this script, but can be used to load environment variables from a .env file.
-
-const bcrypt = require('bcrypt'); // Not used in this script, but can be used to hash passwords before storing them in the database. Realm does this automatically.
+const { openRealm, closeRealm } = require('../utils/realmUtils.js');
 
 // Import and initialize the MongoDB Realm SDK
 const Realm = require('realm');
@@ -23,6 +12,13 @@ const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
 
 // Import the User model
 const Locations = require('../models/Locations');
+
+/**
+ * Locations.js
+ * @author Nathanael Germain
+ *
+ * This file contains the routes for creating, updating, and retrieving location data.
+ */
 
 router.post('/createLocation', async (req, res) => {
     let { locationName, address, city, state, zipCode} = req.body;
@@ -32,9 +28,9 @@ router.post('/createLocation', async (req, res) => {
 
     let realm;
     try {
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
-        realm = await openRealm(app.currentUser);
-
+        // Open a subscription to the Locations collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Locations"), {
                 name: "all-locations",
@@ -42,6 +38,7 @@ router.post('/createLocation', async (req, res) => {
             });
         });
 
+        // Create a new Locations object in the realm
         let newLocation;
         realm.write(() => {
             const newId = new Realm.BSON.ObjectId();
@@ -64,7 +61,6 @@ router.post('/createLocation', async (req, res) => {
         });
 
     } catch (err) {
-        // If an error occurs, return an error message with an error code
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while creating an Locations doc",
@@ -72,7 +68,7 @@ router.post('/createLocation', async (req, res) => {
             error: err.message
         });
     } finally {
-        realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
 
 });
@@ -82,11 +78,11 @@ router.post('/updateRating', async (req, res) => {
 
     let realm;
     try {
+        addedRating = Number(addedRating); // Make sure the rating is a number
 
-        addedRating = Number(addedRating);
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
-        realm = await openRealm(app.currentUser);
-
+        // Open a subscription to the Locations collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Locations"), {
                 name: "all-locations",
@@ -94,10 +90,13 @@ router.post('/updateRating', async (req, res) => {
             });
         });
 
+        // Get the location object from the realm
         const location = realm.objects("Locations").filtered("_idString == $0", locationId)[0];
         
+        // Update the average rating
         const currentAverageRating = location["averageRating"];
         averageRating = currentAverageRating + addedRating;
+        // TODO: Add logic to update the average rating based on the number of reviews
 
         if (!location) {
             return res.status(400).json({
@@ -122,7 +121,7 @@ router.post('/updateRating', async (req, res) => {
             error: error.message
         });
     } finally {
-        realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
 
 });
@@ -131,9 +130,9 @@ router.get('/getAllLocations', async (req, res) => {
 
     let realm;
     try {
-        // Open the realm
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
+        // Open a subscription to the Locations collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Locations"), {
                 name: "Locations-data",
@@ -141,6 +140,7 @@ router.get('/getAllLocations', async (req, res) => {
             });
         });
 
+        // Get all the locations from the realm
         const locationsCollection = realm.objects(Locations);
         const locationsArray = Array.from(locationsCollection);
 
@@ -151,15 +151,13 @@ router.get('/getAllLocations', async (req, res) => {
         });
 
     } catch (err) {
-        // Handle any errors that occur during retrieval
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while retrieving the Locations data",
             error: err.message
         });
     } finally {
-        if (realm)
-            realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
 
 

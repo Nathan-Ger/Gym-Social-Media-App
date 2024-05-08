@@ -1,21 +1,10 @@
-/**
- * User.js
- * @author Nathanael Germain
- *
- *
- */
-
 // Import express and set up the router
 const express = require('express');
 const router = express.Router();
 
+// Import the MongoDB Realm SDK and utilites
 const { MongoClient, ObjectId } = require('mongodb');
-
 const { openRealm, closeRealm, findUserByEmail } = require('../utils/realmUtils.js');
-
-require('dotenv').config(); // Not used in this script, but can be used to load environment variables from a .env file.
-
-const bcrypt = require('bcrypt'); // Not used in this script, but can be used to hash passwords before storing them in the database. Realm does this automatically.
 
 // Import and initialize the MongoDB Realm SDK
 const Realm = require('realm');
@@ -23,6 +12,13 @@ const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
 
 // Import the User model
 const User = require('../models/User');
+
+/**
+ * User.js
+ * @author Nathanael Germain
+ *
+ * This file contains the routes for creating, updating, and retrieving user data.
+ */
 
 router.post('/createUser', async (req, res) => {
     let { email, username } = req.body; // Gets email and password from the request body
@@ -38,8 +34,9 @@ router.post('/createUser', async (req, res) => {
     let realm;
     try {
 
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
+        // Create a new User object in the realm
         const newUser = realm.write(() => {
             return realm.create(User, {
                 email: email,
@@ -55,7 +52,6 @@ router.post('/createUser', async (req, res) => {
         });
 
     } catch (err) {
-        // If an error occurs, return an error message with an error code
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while creating a user doc",
@@ -71,14 +67,13 @@ router.post('/createUser', async (req, res) => {
 router.post('/updateUser', async (req, res) => {
     let { field, newValue } = req.body;
 
-    field = field.toLowerCase();
+    field = field.toLowerCase(); // Convert the field to lowercase for consistency
 
     let realm;
     try {
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
-        realm = await openRealm(app.currentUser);
         const user = realm.objects("User")[0];
-        console.log("User: ", user);
 
         // None of the below should ever be changed.
         if (field == "createdAt" || field == "email") {
@@ -127,13 +122,13 @@ router.get('/getUser', async (req, res) => {
         });
     }
 
-    const userEmail = app.currentUser.profile.email;
+    const userEmail = app.currentUser.profile.email; // Get the current user's email
 
     let realm;
     try {
-        // Open the realm
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Open realm for user
 
+        // Initalize the user data subscription, allows for real-time updates
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("User"), {
                 name: "user-data",
@@ -141,11 +136,9 @@ router.get('/getUser', async (req, res) => {
             });
         });
 
+        // Retrieve the user object from the realm
         const userCollection = realm.objects(User);
-
         const user = userCollection.filtered('email == $0', userEmail)[0];
-
-        console.log(user);
 
         if (!user) {
             return res.status(404).json({
@@ -154,6 +147,7 @@ router.get('/getUser', async (req, res) => {
             });
         }
 
+        // response is the requested field from the user object, returns in success message.
         const response = {};
         response[field] = user[field];
 
@@ -164,7 +158,6 @@ router.get('/getUser', async (req, res) => {
         });
 
     } catch (err) {
-        // Handle any errors that occur during retrieval
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while retrieving the user's data",

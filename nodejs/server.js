@@ -1,6 +1,7 @@
 /**
  * server.js
  * @author Nathanael Germain
+ *
  * This script sets up an Express server that listens on a range of ports (3000-3100).
  * If a port is in use, it tries the next one. It also sets up CORS and JSON parsing,
  * Sets up a route for handling credential-related requests.
@@ -21,15 +22,19 @@ app.use('/Credentials', CredRouter);
 const UserRouter = require('./src/routes/User.js');
 app.use('/User', UserRouter);
 
+// Sets up the route for handling exercise-related requests (search, modify, etc functions)
 const ExerciseRouter = require('./src/routes/Exercise.js');
 app.use('/Exercise', ExerciseRouter);
 
+// Sets up the route for handling post-related requests (search, modify, etc functions)
 const PostsRouter = require('./src/routes/Posts.js');
 app.use('/Posts', PostsRouter);
 
+// Sets up the route for handling location-related requests (search, modify, etc functions)
 const LocationsRouter = require('./src/routes/Locations.js');
 app.use('/Locations', LocationsRouter);
 
+// Sets up the route for handling review-related requests (search, modify, etc functions)
 const ReviewsRouter = require('./src/routes/Reviews.js');
 app.use('/Reviews', ReviewsRouter);
 
