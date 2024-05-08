@@ -21,6 +21,18 @@ app.use('/Credentials', CredRouter);
 const UserRouter = require('./src/routes/User.js');
 app.use('/User', UserRouter);
 
+const ExerciseRouter = require('./src/routes/Exercise.js');
+app.use('/Exercise', ExerciseRouter);
+
+const PostsRouter = require('./src/routes/Posts.js');
+app.use('/Posts', PostsRouter);
+
+const LocationsRouter = require('./src/routes/Locations.js');
+app.use('/Locations', LocationsRouter);
+
+const ReviewsRouter = require('./src/routes/Reviews.js');
+app.use('/Reviews', ReviewsRouter);
+
 // Defined port range.
 const startPort = 3000;
 const endPort = 3100;

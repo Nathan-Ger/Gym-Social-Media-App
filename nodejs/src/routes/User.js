@@ -69,27 +69,41 @@ router.post('/createUser', async (req, res) => {
 });
 
 router.post('/updateUser', async (req, res) => {
-    const { updates } = req.body;
+    let { field, newValue } = req.body;
 
-    let model = "User";
+    field = field.toLowerCase();
+
     let realm;
     try {
-        
+
         realm = await openRealm(app.currentUser);
+        const user = realm.objects("User")[0];
+        console.log("User: ", user);
 
-        const user = realm.objects(User);
-        console.log("User:", user);
-        const userId = user[0]._id;
-        console.log("User ID:", userId);
-
-        // Call a generalized update function (ensure you've defined this function or similar)
-        //const id = await findUserByEmail(app, realm, app.currentUser);
-
-        //console.log("ID: ", id);
+        // None of the below should ever be changed.
+        if (field == "createdAt" || field == "email") {
+            return res.status(400).json({
+                status: "FAILED",
+                message: field + " cannot be updated"
+            });
+        } else if (field == "birthday") {
+            birthday = parseDate(newValue);
+            realm.write(() => {
+                user[field] = birthday;
+            });
+        } else if (field == "totalTimeInGym" || field == "totalCaloriesBurned") {
+            // TODO: Add code to take the new value and use it + the current value to make the new value.
+        } else {
+            realm.write(() => {
+                if (user[field] != undefined) {
+                    user[field] = newValue;
+                }
+            });
+        }
 
         res.json({
             status: "SUCCESS",
-            message: "User updated successfully"
+            message: "User " + field + " updated successfully"
         });
     } catch (error) {
         res.status(500).json({
@@ -102,5 +116,76 @@ router.post('/updateUser', async (req, res) => {
     }
 
 });
+
+router.get('/getUser', async (req, res) => {
+    const field = req.query.field;
+
+    if (!field) {
+        return res.status(400).json({
+            status: "FAILED",
+            message: "No field provided"
+        });
+    }
+
+    const userEmail = app.currentUser.profile.email;
+
+    let realm;
+    try {
+        // Open the realm
+        realm = await openRealm(app.currentUser);
+
+        await realm.subscriptions.update((mutableSubs) => {
+            mutableSubs.add(realm.objects("User"), {
+                name: "user-data",
+                update: true,
+            });
+        });
+
+        const userCollection = realm.objects(User);
+
+        const user = userCollection.filtered('email == $0', userEmail)[0];
+
+        console.log(user);
+
+        if (!user) {
+            return res.status(404).json({
+                status: "FAILED",
+                message: "User not found.",
+            });
+        }
+
+        const response = {};
+        response[field] = user[field];
+
+        res.json({
+            status: "SUCCESS",
+            message: "Current user's data retrieved successfully",
+            data: response
+        });
+
+    } catch (err) {
+        // Handle any errors that occur during retrieval
+        res.status(500).json({
+            status: "FAILED",
+            message: "An error occurred while retrieving the user's data",
+            error: err.message
+        });
+    } finally {
+        realm = await closeRealm(realm);
+    }
+
+
+});
+
+// Parses an date string into a Date object using the format MMDDYYYY
+function parseDate(dateString) {
+    if (typeof dateString !== 'string' || dateString.length !== 8 || isNaN(dateString)) {
+        throw new Error('Invalid date string. Expected format is MMDDYYYY.');
+    }
+    const month = dateString.substring(0, 2) - 1;
+    const day = dateString.substring(2, 4);
+    const year = dateString.substring(4, 8);
+    return new Date(year, month, day);
+}
 
 module.exports = router;
