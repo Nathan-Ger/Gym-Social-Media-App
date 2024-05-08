@@ -1,8 +1,7 @@
 package com.example.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
@@ -13,86 +12,109 @@ import org.bson.types.ObjectId;
  */
 public class Reviews {
     
-    private String userName; // Username of the person posting the review
+    private ObjectId _id; // Unique ID for review
+    private String _idString; // Unique ID in string form
+    private String email; // Username of the person posting the review
     private double rating; // Rating the user gave
-    private String comment; // Any comments the user posted
-    private LocalDate dateOfComment; // Local date of user posting review
+    private String review; // Any comments the user posted
+    private Date createdAt; // Local date of user posting review
+    private String location_id; // ID of the location the review is for
 
-    // Default Constructor
-    public Reviews(String userName, double rating, String comment, LocalDate dateOfComment) {
-        this.userName = userName;
+    // Constructor
+    public Reviews(@SuppressWarnings("exports") ObjectId _id, String _idString, String email, double rating, String review, Date createdAt, String location_id) {
+        this._id = _id;
+        this._idString = _idString;
+        this.email = email;
         this.rating = rating;
-        this.comment = comment;
-        this.dateOfComment = dateOfComment;
-    }
-
-    // Constructor with minimum parameters
-    public Reviews(String userName, double rating, LocalDate dateOfComment) {
-        this.userName = userName;
-        this.rating = rating;
-        comment = null;
-        this.dateOfComment = dateOfComment;
+        this.review = review;
+        this.createdAt = createdAt;
+        this.location_id = location_id;
     }
 
     //region Setters
 
-    // Setter for userName
-    public void setUserNameofPoster(String userName) {
-        this.userName = userName;
+    // Setter for _id
+    @SuppressWarnings("exports")
+    public void set_id(ObjectId _id) {
+        this._id = _id;
     }
-    
+
+    // Setter for _idString
+    public void set_idString(String _idString) {
+        this._idString = _idString;
+    }
+
+    // Setter for email
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     // Setter for rating
     public void setRating(double rating) {
         this.rating = rating;
     }
-    
-    // Setter for comment
-    public void setComment(String comment) {
-        this.comment = comment;
+
+    // Setter for review
+    public void setReview(String review) {
+        this.review = review;
     }
-    
-    // Setter for dateOfComment
-    public void setDateOfComment(LocalDate dateOfComment) {
-        this.dateOfComment = dateOfComment;
+
+    // Setter for createdAt
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    // Setter for location_id
+    public void setLocation_id(String location_id) {
+        this.location_id = location_id;
     }
 
     //endregion
 
     //region Getters
 
-    // Getter for userName
-    public String getUserName() {
-        return userName;
+    // Getter for _id
+    @SuppressWarnings("exports")
+    public ObjectId get_id() {
+        return _id;
     }
-    
+
+    // Getter for _idString
+    public String get_idString() {
+        return _idString;
+    }
+
+    // Getter for email
+    public String getEmail() {
+        return email;
+    }
+
     // Getter for rating
     public double getRating() {
         return rating;
     }
-    
-    // Getter for comment
-    public String getComment() {
-        return comment;
+
+    // Getter for review
+    public String getReview() {
+        return review;
     }
-    
-    // Getter for dateOfComment
-    public LocalDate getDateOfComment() {
-        return dateOfComment;
+
+    // Getter for createdAt
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    // Getter for location_id
+    public String getLocation_id() {
+        return location_id;
     }
 
     //endregion
+    
 
     public void insertReviews() {
 
-        Document doc = new Document()
-                        .append("_id", new ObjectId())
-                        .append("userName", userName)
-                        .append("rating", rating)
-                        .append("comment", comment)
-                        .append("dateOfComment", dateOfComment);
-
-        //MongoDBConnect.insert(doc, "Posts");
-        // Will be added onto the location, does not have its own, separate database.
+        // Call function
 
     }
 

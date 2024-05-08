@@ -1,6 +1,5 @@
 package com.example.model;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
@@ -9,29 +8,24 @@ import org.bson.types.ObjectId;
  * 
  */
 public class Locations {
-    
+
+    private ObjectId _id; // Unique ID for location
+    private String _idString;
     private String locationName; // Name of the location
     private String address; // Street Address
     private String zipCode; // Zip Code
     private String state; // State ex. NY, CA, TX
-    private double rating; // Average rating on location, displayed to second decimal place
+    private double averageRating; // Average rating on location, displayed to second decimal place
 
     // Default Constructor
-    public Locations(String locationName, String address, String zipCode, String state, double rating) {
+    public Locations(@SuppressWarnings("exports") ObjectId _id, String _idString, String locationName, String address, String zipCode, String state, double averageRating) {
+        this._id = _id;
+        this._idString = _idString;
         this.locationName = locationName;
         this.address = address;
         this.zipCode = zipCode;
         this.state = state;
-        this.rating = rating;
-    }
-
-    // Constructor with minimum parameters
-    public Locations(String locationName, String address, String zipCode, String state) {
-        this.locationName = locationName;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.state = state;
-        this.rating = 0;
+        this.averageRating = averageRating;
     }
 
     //region Setters
@@ -56,14 +50,25 @@ public class Locations {
         this.state = state;
     }
 
-    // Setter for rating
-    public void setRating(double rating) {
-        this.rating = rating;
+    // Setter for averageRating
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
     //endregion
 
     //region Getters
+
+    // Getter for _id, setter not needed
+    @SuppressWarnings("exports")
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    // Getter for _idString, setter not needed
+    public String get_idString() {
+        return _idString;
+    }
 
     // Getter for locationName
     public String getLocationName() {
@@ -86,22 +91,14 @@ public class Locations {
     }
     
     // Getter for rating
-    public double getRating() {
-        return rating;
+    public double getAverageRating() {
+        return averageRating;
     }
 
     //endregion
 public void insertLocations() {
 
-        Document doc = new Document()
-                        .append("_id", new ObjectId())
-                        .append("locationName", locationName)
-                        .append("address", address)
-                        .append("zipCode", zipCode)
-                        .append("state", state)
-                        .append("rating", rating);
-                         
-        MongoDBConnect.insert(doc, "Locations");
+        // TODO: Call function
 
     }
 

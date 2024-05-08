@@ -1,8 +1,7 @@
 package com.example.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
@@ -12,45 +11,52 @@ import org.bson.types.ObjectId;
  */
 public class Posts {
     
-    private String userName; // Username of the user who posted
+    private ObjectId _id; // Unique ID for post
+    private String _idString; // Unique ID in string form
+    private String email; // email of the user who posted
     private String mediaLink; // Link to the photo uploaded
-    private LocalDate dateOfPost; // Local Date of user who posted
+    private Date createdAt; // Local Date of user who posted
+    private String caption; // Caption of the post
     private int likes; // Total Likes on post
 
-    // Default Constructor
-    public Posts(String userName, String mediaLink, LocalDate dateOfPost, int likes) {
-        this.userName = userName;
+    // Constructor
+    public Posts(@SuppressWarnings("exports") ObjectId _id, String _idString, String email, String mediaLink, Date createdAt, String caption, int likes) {
+        this._id = _id;
+        this._idString = _idString;
+        this.email = email;
         this.mediaLink = mediaLink;
-        this.dateOfPost = dateOfPost;
+        this.createdAt = createdAt;
+        this.caption = caption;
         this.likes = likes;
-    }
-
-    // Constructor with minimum parameters
-    public Posts(String userName, String mediaLink, LocalDate dateOfPost) {
-        this.userName = userName;
-        this.mediaLink = mediaLink;
-        this.dateOfPost = dateOfPost;
-        this.likes = 0;
     }
 
     //region Setters
 
-    // Setter for userName
-    public void setUserName(String userName) {
-        this.userName = userName;
+    @SuppressWarnings("exports")
+    public void set_id(ObjectId _id) {
+        this._id = _id;
     }
-    
-    // Setter for mediaLink
+
+    public void set_idString(String _idString) {
+        this._idString = _idString;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setMediaLink(String mediaLink) {
         this.mediaLink = mediaLink;
     }
-    
-    // Setter for dateOfPost
-    public void setDateOfPost(LocalDate dateOfPost) {
-        this.dateOfPost = dateOfPost;
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
-    
-    // Setter for likes
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
     public void setLikes(int likes) {
         this.likes = likes;
     }
@@ -59,22 +65,31 @@ public class Posts {
 
     //region Getters
 
-    // Getter for userName
-    public String getUserName() {
-        return userName;
+    @SuppressWarnings("exports")
+    public ObjectId get_id() {
+        return _id;
     }
-    
-    // Getter for mediaLink
+
+    public String get_idString() {
+        return _idString;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public String getMediaLink() {
         return mediaLink;
     }
-    
-    // Getter for dateOfPost
-    public LocalDate getDateOfPost() {
-        return dateOfPost;
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
-    
-    // Getter for likes
+
+    public String getCaption() {
+        return caption;
+    }
+
     public int getLikes() {
         return likes;
     }
@@ -83,14 +98,7 @@ public class Posts {
 
     public void insertPosts() {
 
-        Document doc = new Document()
-                        .append("_id", new ObjectId())
-                        .append("userName", userName)
-                        .append("mediaLink", mediaLink)
-                        .append("dateOfPost", dateOfPost)
-                        .append("likes", likes);
-
-        MongoDBConnect.insert(doc, "Posts");
+        // TODO: Call Function
 
     }
 

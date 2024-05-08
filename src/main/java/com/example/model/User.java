@@ -1,9 +1,7 @@
 package com.example.model;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Date;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
@@ -13,30 +11,31 @@ import org.bson.types.ObjectId;
  */
 public class User {
     
-    private String fName;
-    private String lName;
-    private String userName;
-    private String email;
-    private String phoneNumber;
-    private LocalDate birthday;
-    private int startingWeight; // lbs
-    private int currentWeight; // lbs
-    private int goalWeight; // lbs
-    private int height; // inches
+    private ObjectId _id; // Unique ID for user
+    private String fName; // First Name
+    private String lName; // Last Name
+    private String username; // Username
+    private String email; // Email
+    private String phoneNumber; // Phone Number
+    private Date birthday; // Date of Birth
+    private double startingWeight; // lbs
+    private double currentWeight; // lbs
+    private double goalWeight; // lbs
+    private double height; // inches
     private String profilePicture; // string of link
-    private int totalTimeInGym; // Seconds
-    private int totalCaloriesBurned; // calories
+    private double totalTimeInGym; // Seconds
+    private double totalCaloriesBurned; // calories
 
-    //region Constructors
-
-    // Default Constructor
-    public User(String fName, String lName, String userName, String email,
-                String phoneNumber, LocalDate birthday, int startingWeight,
-                int currentWeight, int goalWeight, int height,
-                String profilePicture, int totalTimeInGym, int totalCaloriesBurned) {
+    // Constructor
+    public User(@SuppressWarnings("exports") ObjectId _id, String fName, String lName,
+                    String username, String email, String phoneNumber, Date birthday,
+                    double startingWeight, double currentWeight, double goalWeight,
+                    double height, String profilePicture, double totalTimeInGym,
+                    double totalCaloriesBurned) {
+        this._id = _id;
         this.fName = fName;
         this.lName = lName;
-        this.userName = userName;
+        this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
@@ -49,39 +48,27 @@ public class User {
         this.totalCaloriesBurned = totalCaloriesBurned;
     }
 
-    // Constructor with only the necessary items.
-    public User(String fName, String lName, String userName, String email) {
-        this.fName = fName;
-        this.lName = lName;
-        this.userName = userName;
-        this.email = email;
-        this.phoneNumber = null;
-        this.birthday = null;
-        this.startingWeight = 0;
-        this.goalWeight = 0;
-        this.height = 0;
-        this.profilePicture = null;
-        this.totalTimeInGym = 0;
-        this.totalCaloriesBurned = 0;
-    }
-
-    //endregion
-
     //region Setters
 
+    // Setter for _id
+    @SuppressWarnings("exports")
+    public void set_id(ObjectId _id) {
+        this._id = _id;
+    }
+
     // Setter for fName
-    public void setFName(String fName) {
+    public void setfName(String fName) {
         this.fName = fName;
     }
 
     // Setter for lName
-    public void setLName(String lName) {
+    public void setlName(String lName) {
         this.lName = lName;
     }
 
-    // Setter for userName
-    public void setUserName(String userName) {
-        this.userName = userName;
+    // Setter for username
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     // Setter for email
@@ -94,28 +81,28 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    // Setter for birthDay
-    public void setBirthday(LocalDate birthday) {
+    // Setter for birthday
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
     // Setter for startingWeight
-    public void setStartingWeight(int startingWeight) {
+    public void setStartingWeight(double startingWeight) {
         this.startingWeight = startingWeight;
     }
 
     // Setter for currentWeight
-    public void setCurrentWeight(int currentWeight) {
+    public void setCurrentWeight(double currentWeight) {
         this.currentWeight = currentWeight;
     }
 
     // Setter for goalWeight
-    public void setGoalWeight(int goalWeight) {
+    public void setGoalWeight(double goalWeight) {
         this.goalWeight = goalWeight;
     }
 
     // Setter for height
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
@@ -125,12 +112,12 @@ public class User {
     }
 
     // Setter for totalTimeInGym
-    public void setTotalTimeInGym(int totalTimeInGym) {
+    public void setTotalTimeInGym(double totalTimeInGym) {
         this.totalTimeInGym = totalTimeInGym;
     }
 
     // Setter for totalCaloriesBurned
-    public void setTotalCaloriesBurned(int totalCaloriesBurned) {
+    public void setTotalCaloriesBurned(double totalCaloriesBurned) {
         this.totalCaloriesBurned = totalCaloriesBurned;
     }
 
@@ -138,19 +125,25 @@ public class User {
 
     //region Getters
 
+    // Getter for _id
+    @SuppressWarnings("exports")
+    public ObjectId get_id() {
+        return _id;
+    }
+
     // Getter for fName
-    public String getFName() {
+    public String getfName() {
         return fName;
     }
 
     // Getter for lName
-    public String getLName() {
+    public String getlName() {
         return lName;
     }
 
-    // Getter for userName
-    public String getUserName() {
-        return userName;
+    // Getter for username
+    public String getUsername() {
+        return username;
     }
 
     // Getter for email
@@ -163,28 +156,28 @@ public class User {
         return phoneNumber;
     }
 
-    // Getter for birthDay
-    public LocalDate getBirthday() {
+    // Getter for birthday
+    public Date getBirthday() {
         return birthday;
     }
 
     // Getter for startingWeight
-    public int getStartingWeight() {
+    public double getStartingWeight() {
         return startingWeight;
     }
 
     // Getter for currentWeight
-    public int getCurrentWeight() {
+    public double getCurrentWeight() {
         return currentWeight;
     }
 
     // Getter for goalWeight
-    public int getGoalWeight() {
+    public double getGoalWeight() {
         return goalWeight;
     }
 
     // Getter for height
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
@@ -194,70 +187,27 @@ public class User {
     }
 
     // Getter for totalTimeInGym
-    public int getTotalTimeInGym() {
+    public double getTotalTimeInGym() {
         return totalTimeInGym;
     }
 
     // Getter for totalCaloriesBurned
-    public int getTotalCaloriesBurned() {
+    public double getTotalCaloriesBurned() {
         return totalCaloriesBurned;
     }
 
     //endregion
 
-    //region Methods
-
     public void insertUser() {
 
-        // Confirms there is not already the same username in the database
-        if (MongoDBConnect.findDuplicateUserNames(userName)) {
-            System.out.println("\n\n\nDuplicate username found.");
-            return;
-        }
-
-        // Creates a Document with the given user
-        Document doc = new Document()
-                        .append("_id", new ObjectId())
-                        .append("fName", fName)
-                        .append("lName", lName)
-                        .append("userName", userName)
-                        .append("email", email)
-                        .append("phoneNumber", phoneNumber)
-                        .append("birthday", birthday)
-                        .append("startingWeight", startingWeight)
-                        .append("currentWeight", currentWeight)
-                        .append("goalWeight", goalWeight)
-                        .append("height", height)
-                        .append("profilePicture", profilePicture)
-                        .append("totalTimeInGym", totalTimeInGym)
-                        .append("totalCaloriesBurned", totalCaloriesBurned);
-
-        MongoDBConnect.insert(doc, "Users"); // Inserts user into database
+        // TODO: Call Function
 
     }
 
     public static void updateUserName(String searchableUserName, String newUserName) {
 
-        // Confirms there is not already the same username in the database
-        if (MongoDBConnect.findDuplicateUserNames(newUserName)) {
-            System.out.println("\n\n\nDuplicate username found.");
-            return;
-        }
-
-        // Updates Users by username
-        List<String> userIds = MongoDBConnect.findIdWithUserName(searchableUserName, "Users");
-        MongoDBConnect.update(userIds, "Users", "userName", newUserName);
-
-        // Updates Excerises by username
-        List<String> exerciseIds = MongoDBConnect.findIdWithUserName(searchableUserName, "Exercise");
-        MongoDBConnect.update(exerciseIds, "Exercise", "userName", newUserName);
-
-        // Updates Posts by username
-        List<String> postIds = MongoDBConnect.findIdWithUserName(searchableUserName, "Posts");
-        MongoDBConnect.update(postIds, "Posts", "userName", newUserName);
+        // TODO: Call Function
 
     }
-
-    //endregion
 
 }

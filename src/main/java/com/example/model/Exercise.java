@@ -1,8 +1,7 @@
 package com.example.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
@@ -12,147 +11,135 @@ import org.bson.types.ObjectId;
  */
 public class Exercise {
     
-    private String userName; // Used to connect to User object
+    private ObjectId _id; // Unique ID for exercise
+    private String _idString; // Unique ID in string form
+    private String email; // Used to connect to User object
     private String typeofExercise; // Name of exercise
     private boolean lifted; // false if ran, true if lifted weights
-    private LocalDate dateOfWorkout;
-    private int timeSpent; // Seconds
-    private int caloriesBurned; // calories
+    private Date dateOfWorkout;
+    private double timeSpent; // Seconds
+    private double caloriesBurned; // calories
     private int sets; // Will show if lifted is true; Default is 1
-    private double milesRan; // miles, will only show if lifted is false; Default is 0
-    private int weightLifted; // lbs, will only show if lifted is true; Default is 0
+    private double miles; // miles, will only show if lifted is false; Default is 0
+    private double weightLifted; // lbs, will only show if lifted is true; Default is 0
 
-    // Default Constructor
-    public Exercise(String userName, String typeofExercise, boolean lifted, 
-                    LocalDate dateOfWorkout, int timeSpent, int caloriesBurned, 
-                    int sets, double milesRan, int weightLifted) {
-
-        this.userName = userName;
+    // Constructor
+    public Exercise(@SuppressWarnings("exports") ObjectId _id, String _idString, String email, String typeofExercise, boolean lifted, Date dateOfWorkout, double timeSpent, double caloriesBurned, int sets, double miles, double weightLifted) {
+        this._id = _id;
+        this._idString = _idString;
+        this.email = email;
         this.typeofExercise = typeofExercise;
         this.lifted = lifted;
         this.dateOfWorkout = dateOfWorkout;
         this.timeSpent = timeSpent;
         this.caloriesBurned = caloriesBurned;
         this.sets = sets;
-        this.milesRan = milesRan;
+        this.miles = miles;
         this.weightLifted = weightLifted;
-
     }
 
     //region Setters
 
-    // Setter for userName
-    public void setUserName(String userName) {
-        this.userName = userName;
+    @SuppressWarnings("exports")
+    public void set_id(ObjectId _id) {
+        this._id = _id;
     }
 
-    // Setter for type of exercise
-    public void setTypeOfExercise(String typeofExercise) {
+    public void set_idString(String _idString) {
+        this._idString = _idString;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTypeofExercise(String typeofExercise) {
         this.typeofExercise = typeofExercise;
     }
 
-    // Setter for lifted status
     public void setLifted(boolean lifted) {
         this.lifted = lifted;
     }
 
-    // Setter for date of workout
-    public void setDateOfWorkout(LocalDate dateOfWorkout) {
+    public void setDateOfWorkout(Date dateOfWorkout) {
         this.dateOfWorkout = dateOfWorkout;
     }
 
-    // Setter for time spent
-    public void setTimeSpent(int timeSpent) {
+    public void setTimeSpent(double timeSpent) {
         this.timeSpent = timeSpent;
     }
 
-    // Setter for calories burned
-    public void setCaloriesBurned(int caloriesBurned) {
+    public void setCaloriesBurned(double caloriesBurned) {
         this.caloriesBurned = caloriesBurned;
     }
 
-    // Setter for sets
     public void setSets(int sets) {
         this.sets = sets;
     }
 
-    // Setter for miles ran
-    public void setMilesRan(double milesRan) {
-        this.milesRan = milesRan;
+    public void setMiles(double miles) {
+        this.miles = miles;
     }
 
-    // Setter for weight lifted
-    public void setWeightLifted(int weightLifted) {
+    public void setWeightLifted(double weightLifted) {
         this.weightLifted = weightLifted;
     }
 
-
-    //endregion
-
+    //#endregion
+    
     //region Getters
 
-    // Getter for userName
-    public String getUserName() {
-        return userName;
+    @SuppressWarnings("exports")
+    public ObjectId get_id() {
+        return _id;
     }
 
-    // Getter for type of exercise
-    public String getTypeOfExercise() {
+    public String get_idString() {
+        return _idString;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTypeofExercise() {
         return typeofExercise;
     }
 
-    // Getter for lifted status
     public boolean isLifted() {
         return lifted;
     }
 
-    // Getter for date of workout
-    public LocalDate getDateOfWorkout() {
+    public Date getDateOfWorkout() {
         return dateOfWorkout;
     }
 
-    // Getter for time spent
-    public int getTimeSpent() {
+    public double getTimeSpent() {
         return timeSpent;
     }
 
-    // Getter for calories burned
-    public int getCaloriesBurned() {
+    public double getCaloriesBurned() {
         return caloriesBurned;
     }
 
-    // Getter for sets
     public int getSets() {
         return sets;
     }
 
-    // Getter for miles ran
-    public double getMilesRan() {
-        return milesRan;
+    public double getMiles() {
+        return miles;
     }
 
-    // Getter for weight lifted
-    public int getWeightLifted() {
+    public double getWeightLifted() {
         return weightLifted;
     }
 
     //endregion
+
     
     public void insertExercise() {
 
-        Document doc = new Document()
-                        .append("_id", new ObjectId())
-                        .append("userName", userName)
-                        .append("typeOfExercise", typeofExercise)
-                        .append("lifted", lifted)
-                        .append("dateOfWorkout", dateOfWorkout)
-                        .append("timeSpent", timeSpent)
-                        .append("caloriesBurned", caloriesBurned)
-                        .append("sets", sets)
-                        .append("milesRan", milesRan)
-                        .append("weightLifted", weightLifted);
-
-        MongoDBConnect.insert(doc, "Exercise");
+        // TODO: Call function
 
     }
 
