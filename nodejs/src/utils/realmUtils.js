@@ -1,13 +1,15 @@
 const Realm = require('realm');
-const User = require('../models/User'); // Ensure this path is correct for your User model
-const Exercise = require('../models/Exercise'); // Ensure this path is correct for your Exercise model
-const Posts = require('../models/Posts'); // Ensure this path is correct for your Posts model
+const User = require('../models/User');
+const Exercise = require('../models/Exercise');
+const Posts = require('../models/Posts');
+const Locations = require('../models/Locations');
+const Reviews = require('../models/Reviews');
 
 // Function to open a Realm with a specified user and configuration
 async function openRealm(user) {
 
     const config = {
-        schema: [User, Exercise, Posts], // Ensure the schema is correctly referenced
+        schema: [User, Exercise, Posts, Locations, Reviews], // Ensure the schema is correctly referenced
         sync: {
             user: user,
             flexible: true

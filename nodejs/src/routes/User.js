@@ -141,11 +141,12 @@ router.get('/getUser', async (req, res) => {
             });
         });
 
-
         const userCollection = realm.objects(User);
 
         const user = userCollection.filtered('email == $0', userEmail)[0];
-        
+
+        console.log(user);
+
         if (!user) {
             return res.status(404).json({
                 status: "FAILED",

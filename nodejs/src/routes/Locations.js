@@ -22,18 +22,13 @@ const Realm = require('realm');
 const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
 
 // Import the User model
-const Posts = require('../models/Posts');
+const Locations = require('../models/Locations');
 
-router.post('/createPost', async (req, res) => {
-    let { mediaLink, caption, createdAt, likes } = req.body;
+router.post('/createLocation', async (req, res) => {
+    let { locationName, address, city, state, zipCode} = req.body;
 
     // Below field are not required.
-    caption = caption || "";
-    createdAt = createdAt || new Date();
-    likes = likes || 0;
-
-    // MediaLink is required, but for testing has a default
-    mediaLink = mediaLink || "https://placeholder.com/placeholder.jpg";
+    let averageRating = 0;
 
     let realm;
     try {
@@ -41,37 +36,38 @@ router.post('/createPost', async (req, res) => {
         realm = await openRealm(app.currentUser);
 
         await realm.subscriptions.update((mutableSubs) => {
-            mutableSubs.add(realm.objects("Posts"), {
-                name: "all-posts",
+            mutableSubs.add(realm.objects("Locations"), {
+                name: "all-locations",
                 update: true,
             });
         });
 
-        let newPost;
+        let newLocation;
         realm.write(() => {
             const newId = new Realm.BSON.ObjectId();
-            newPost = realm.create(Posts, {
+            newLocation = realm.create(Locations, {
                 _id: newId,
                 _idString: newId.toString(),
-                email: app.currentUser.profile.email,
-                mediaLink: mediaLink,
-                caption: caption,
-                createdAt: createdAt,
-                likes: likes
+                locationName: locationName,
+                address: address,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+                averageRating: averageRating
             });
         });
 
         res.json({
             status: "SUCCESS",
-            message: "Posts doc created successfully",
-            data: newPost
+            message: "Locations doc created successfully",
+            data: newLocation
         });
 
     } catch (err) {
         // If an error occurs, return an error message with an error code
         res.status(500).json({
             status: "FAILED",
-            message: "An error occurred while creating an Posts doc",
+            message: "An error occurred while creating an Locations doc",
             data: err,
             error: err.message
         });
@@ -81,47 +77,43 @@ router.post('/createPost', async (req, res) => {
 
 });
 
-router.post('/updatePost', async (req, res) => {
-    let { postId, field, newValue } = req.body;
-
-    field = field.toLowerCase();
+router.post('/updateRating', async (req, res) => {
+    let { locationId, addedRating } = req.body;
 
     let realm;
     try {
 
+        addedRating = Number(addedRating);
+
         realm = await openRealm(app.currentUser);
 
         await realm.subscriptions.update((mutableSubs) => {
-            mutableSubs.add(realm.objects("Posts"), {
-                name: "all-posts",
+            mutableSubs.add(realm.objects("Locations"), {
+                name: "all-locations",
                 update: true,
             });
         });
 
-        const post = realm.objects("Posts").filtered("_idString == $0", postId)[0];
+        const location = realm.objects("Locations").filtered("_idString == $0", locationId)[0];
+        
+        const currentAverageRating = location["averageRating"];
+        averageRating = currentAverageRating + addedRating;
 
-        if (!post) {
+        if (!location) {
             return res.status(400).json({
                 status: "FAILED",
-                message: "Post not found"
+                message: "Location not found"
             });
         }
-
-        // None of the below should ever be changed.
-        if (field == "email" || field == "mediaLink" || field == "createdAt") {
-            return res.status(400).json({
-                status: "FAILED",
-                message: field + " cannot be updated"
-            });
-        } else {
-            realm.write(() => {
-                post[field] = newValue;
-            });
-        }
+        
+        realm.write(() => {
+            location["averageRating"] = averageRating;
+        });
+        
 
         res.json({
             status: "SUCCESS",
-            message: "Posts " + field + " updated successfully"
+            message: "Location reviews updated successfully"
         });
     } catch (error) {
         res.status(500).json({
@@ -132,6 +124,44 @@ router.post('/updatePost', async (req, res) => {
     } finally {
         realm = await closeRealm(realm);
     }
+
+});
+
+router.get('/getAllLocations', async (req, res) => {
+
+    let realm;
+    try {
+        // Open the realm
+        realm = await openRealm(app.currentUser);
+
+        await realm.subscriptions.update((mutableSubs) => {
+            mutableSubs.add(realm.objects("Locations"), {
+                name: "Locations-data",
+                update: true,
+            });
+        });
+
+        const locationsCollection = realm.objects(Locations);
+        const locationsArray = Array.from(locationsCollection);
+
+        res.json({
+            status: "SUCCESS",
+            message: "Locations data retrieved successfully",
+            data: locationsArray
+        });
+
+    } catch (err) {
+        // Handle any errors that occur during retrieval
+        res.status(500).json({
+            status: "FAILED",
+            message: "An error occurred while retrieving the Locations data",
+            error: err.message
+        });
+    } finally {
+        if (realm)
+            realm = await closeRealm(realm);
+    }
+
 
 });
 

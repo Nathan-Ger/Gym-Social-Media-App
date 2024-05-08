@@ -50,7 +50,10 @@ router.post('/createExercise', async (req, res) => {
 
         let newExercise;
         realm.write(() => {
+            const newId = new Realm.BSON.ObjectId();
             newExercise = realm.create(Exercise, {
+                _id: newId,
+                _idString: newId.toString(),
                 email: app.currentUser.profile.email,
                 exerciseName: exerciseName,
                 lifted: lifted,
@@ -144,6 +147,47 @@ router.post('/updateExercise', async (req, res) => {
     } finally {
         realm = await closeRealm(realm);
     }
+
+});
+
+router.get('/getAllExercises', async (req, res) => {
+
+    const userEmail = app.currentUser.profile.email;
+
+    let realm;
+    try {
+        // Open the realm
+        realm = await openRealm(app.currentUser);
+
+        await realm.subscriptions.update((mutableSubs) => {
+            mutableSubs.add(realm.objects("Exercise"), {
+                name: "exercise-data",
+                update: true,
+            });
+        });
+
+        const exerciseCollection = realm.objects(Exercise);
+        const exercises = exerciseCollection.filtered('email == $0', userEmail);
+        const exercisesArray = Array.from(exercises);
+
+        res.json({
+            status: "SUCCESS",
+            message: "Current user's exercise data retrieved successfully",
+            data: exercisesArray
+        });
+
+    } catch (err) {
+        // Handle any errors that occur during retrieval
+        res.status(500).json({
+            status: "FAILED",
+            message: "An error occurred while retrieving the user's exercise data",
+            error: err.message
+        });
+    } finally {
+        if (realm)
+            realm = await closeRealm(realm);
+    }
+
 
 });
 

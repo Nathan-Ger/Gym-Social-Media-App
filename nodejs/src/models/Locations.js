@@ -6,13 +6,13 @@ class Locations extends Realm.Object {
         primaryKey: "_id",
         properties: {
             _id: { type: "objectId", default: () => new Realm.BSON.ObjectId()},
+            _idString: "string",
             locationName: "string",
             address: "string",
             city: "string",
             state: "string",
             zipCode: "string",
-            averageRating: {type: "double", default: 0},
-            reviews: "Locations_reviews[]?",
+            averageRating: "double?",
         },
     };
 }

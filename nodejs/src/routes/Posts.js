@@ -135,4 +135,45 @@ router.post('/updatePost', async (req, res) => {
 
 });
 
+router.get('/getUserPosts', async (req, res) => {
+
+    const userEmail = app.currentUser.profile.email;
+
+    let realm;
+    try {
+        // Open the realm
+        realm = await openRealm(app.currentUser);
+
+        await realm.subscriptions.update((mutableSubs) => {
+            mutableSubs.add(realm.objects("Posts"), {
+                name: "posts-data",
+                update: true,
+            });
+        });
+
+        const postsCollection = realm.objects(Posts);
+        const posts = postsCollection.filtered('email == $0', userEmail);
+        const postsArray = Array.from(posts);
+
+        res.json({
+            status: "SUCCESS",
+            message: "Current user's post data retrieved successfully",
+            data: postsArray
+        });
+
+    } catch (err) {
+        // Handle any errors that occur during retrieval
+        res.status(500).json({
+            status: "FAILED",
+            message: "An error occurred while retrieving the user's post data",
+            error: err.message
+        });
+    } finally {
+        if (realm)
+            realm = await closeRealm(realm);
+    }
+
+
+});
+
 module.exports = router;

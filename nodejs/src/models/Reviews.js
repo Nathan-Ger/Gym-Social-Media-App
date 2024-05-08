@@ -11,7 +11,7 @@ class Reviews extends Realm.Object {
             rating: "double",
             review: "string?",
             createdAt: "date?",
-            location: 'Reviews_location?',
+            location_id: 'string',
         },
     };
 }
