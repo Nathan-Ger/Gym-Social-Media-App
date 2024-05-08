@@ -1,21 +1,10 @@
-/**
- * User.js
- * @author Nathanael Germain
- *
- *
- */
-
 // Import express and set up the router
 const express = require('express');
 const router = express.Router();
 
+// Import the MongoDB Realm SDK and the Exercise model
 const { MongoClient, ObjectId } = require('mongodb');
-
-const { openRealm, closeRealm, findUserByEmail } = require('../utils/realmUtils.js');
-
-require('dotenv').config(); // Not used in this script, but can be used to load environment variables from a .env file.
-
-const bcrypt = require('bcrypt'); // Not used in this script, but can be used to hash passwords before storing them in the database. Realm does this automatically.
+const { openRealm, closeRealm } = require('../utils/realmUtils.js');
 
 // Import and initialize the MongoDB Realm SDK
 const Realm = require('realm');
@@ -23,6 +12,13 @@ const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
 
 // Import the User model
 const Exercise = require('../models/Exercise');
+
+/**
+ * Exercise.js
+ * @author Nathanael Germain
+ *
+ * This file contains the routes for creating, updating, and retrieving exercise data.
+ */
 
 router.post('/createExercise', async (req, res) => {
     let { exerciseName, lifted, weight, sets, timeSpent, dateOfWorkout, caloriesBurned, miles } = req.body;
@@ -39,8 +35,9 @@ router.post('/createExercise', async (req, res) => {
     let realm;
     try {
 
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
+        // Open a subscription to the Exercise collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Exercise"), {
                 name: "all-exercises",
@@ -48,6 +45,7 @@ router.post('/createExercise', async (req, res) => {
             });
         });
 
+        // Create a new Exercise object in the realm
         let newExercise;
         realm.write(() => {
             const newId = new Realm.BSON.ObjectId();
@@ -73,7 +71,6 @@ router.post('/createExercise', async (req, res) => {
         });
 
     } catch (err) {
-        // If an error occurs, return an error message with an error code
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while creating an exercise doc",
@@ -81,7 +78,7 @@ router.post('/createExercise', async (req, res) => {
             error: err.message
         });
     } finally {
-        realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Closes realm for user after operation
     }
 
 });
@@ -89,13 +86,14 @@ router.post('/createExercise', async (req, res) => {
 router.post('/updateExercise', async (req, res) => {
     let { exerciseId, field, newValue } = req.body;
 
-    field = field.toLowerCase();
+    field = field.toLowerCase(); // Convert field to lowercase for consistency
 
     let realm;
     try {
 
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Open realm for user
 
+        // Open a subscription to the Exercise collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Exercise"), {
                 name: "all-exercises",
@@ -103,6 +101,7 @@ router.post('/updateExercise', async (req, res) => {
             });
         });
 
+        // Find the exercise object in the realm based off of the passed id.
         const exercise = realm.objects("Exercise").filtered("_idString == $0", exerciseId)[0];
 
         if (!exercise) {
@@ -112,7 +111,7 @@ router.post('/updateExercise', async (req, res) => {
             });
         }
 
-        // None of the below should ever be changed.
+        // email should ever be changed.
         if (field == "email") {
             return res.status(400).json({
                 status: "FAILED",
@@ -145,20 +144,20 @@ router.post('/updateExercise', async (req, res) => {
             error: error.message
         });
     } finally {
-        realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close realm for user after operation
     }
 
 });
 
 router.get('/getAllExercises', async (req, res) => {
 
-    const userEmail = app.currentUser.profile.email;
+    const userEmail = app.currentUser.profile.email; // Get the current user's email
 
     let realm;
     try {
-        // Open the realm
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Open realm for user
 
+        // Open a subscription to the Exercise collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Exercise"), {
                 name: "exercise-data",
@@ -166,6 +165,7 @@ router.get('/getAllExercises', async (req, res) => {
             });
         });
 
+        // Retrieve all exercises for the current user, puts it in an array.
         const exerciseCollection = realm.objects(Exercise);
         const exercises = exerciseCollection.filtered('email == $0', userEmail);
         const exercisesArray = Array.from(exercises);
@@ -177,22 +177,23 @@ router.get('/getAllExercises', async (req, res) => {
         });
 
     } catch (err) {
-        // Handle any errors that occur during retrieval
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while retrieving the user's exercise data",
             error: err.message
         });
     } finally {
-        if (realm)
-            realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close realm for user after operation
     }
 
 
 });
 
-// Parses an date string into a Date object using the format MMDDYYYY
+// Parses a date string into a Date object using the format MMDDYYYY
 function parseDate(dateString) {
+    if (typeof dateString !== 'string' || dateString.length !== 8 || isNaN(dateString)) {
+        throw new Error('Invalid date string. Expected format is MMDDYYYY.');
+    }
     const month = dateString.substring(0, 2) - 1;
     const day = dateString.substring(2, 4);
     const year = dateString.substring(4, 8);

@@ -1,14 +1,12 @@
 package com.example.model;
-
 import java.util.Date;
 
 import org.bson.types.ObjectId;
 
-/**
- * @author NathanaelGermain
- * 
- * Reviews is held as a document within Locations, as such is not stored in its own database.
- * 
+/** Reviews.java
+ * @author Nathanael Germain
+ *
+ * Lines up with MongoDB Schema
  */
 public class Reviews {
     

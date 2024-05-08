@@ -1,21 +1,10 @@
-/**
- * User.js
- * @author Nathanael Germain
- *
- *
- */
-
 // Import express and set up the router
 const express = require('express');
 const router = express.Router();
 
+// Import the MongoDB Realm SDK and the utilites functions
 const { MongoClient, ObjectId } = require('mongodb');
-
 const { openRealm, closeRealm, findUserByEmail } = require('../utils/realmUtils.js');
-
-require('dotenv').config(); // Not used in this script, but can be used to load environment variables from a .env file.
-
-const bcrypt = require('bcrypt'); // Not used in this script, but can be used to hash passwords before storing them in the database. Realm does this automatically.
 
 // Import and initialize the MongoDB Realm SDK
 const Realm = require('realm');
@@ -23,6 +12,13 @@ const app = new Realm.App({ id: 'gymsocialbefit-rzkqhmz' });
 
 // Import the User model
 const Reviews = require('../models/Reviews');
+
+/**
+ * Reviews.js
+ * @author Nathanael Germain
+ *
+ * This file contains the routes for creating, updating, and retrieving review data.
+ */
 
 router.post('/createReview', async (req, res) => {
     let { locationId, rating, review } = req.body;
@@ -33,9 +29,9 @@ router.post('/createReview', async (req, res) => {
 
     let realm;
     try {
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
-        realm = await openRealm(app.currentUser);
-
+        // Open a subscription to the Reviews collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Reviews"), {
                 name: "all-reviews",
@@ -43,6 +39,7 @@ router.post('/createReview', async (req, res) => {
             });
         });
 
+        // Create a new Reviews object in the realm
         let newReview;
         realm.write(() => {
             const newId = new Realm.BSON.ObjectId();
@@ -64,7 +61,6 @@ router.post('/createReview', async (req, res) => {
         });
 
     } catch (err) {
-        // If an error occurs, return an error message with an error code
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while creating an Reviews doc",
@@ -72,7 +68,7 @@ router.post('/createReview', async (req, res) => {
             error: err.message
         });
     } finally {
-        realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
 
 });
@@ -82,9 +78,9 @@ router.post('/updateReview', async (req, res) => {
 
     let realm;
     try {
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
-        realm = await openRealm(app.currentUser);
-
+        // Open a subscription to the Reviews collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Reviews"), {
                 name: "all-reviews",
@@ -92,8 +88,10 @@ router.post('/updateReview', async (req, res) => {
             });
         });
 
+        // Retrieve the review object from the realm using the reviews _id
         const review = realm.objects("Reviews").filtered("_idString == $0", reviewId)[0];
 
+        // Check if the review exists
         if (!review) {
             return res.status(400).json({
                 status: "FAILED",
@@ -101,11 +99,11 @@ router.post('/updateReview', async (req, res) => {
             });
         }
         
+        // Update the review object in the realm
         realm.write(() => {
             review[field] = newValue;
         });
         
-
         res.json({
             status: "SUCCESS",
             message: "Reviews " + field + " updated successfully"
@@ -117,20 +115,20 @@ router.post('/updateReview', async (req, res) => {
             error: error.message
         });
     } finally {
-        realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
 
 });
 
 router.get('/getUserReviews', async (req, res) => {
 
-    const userEmail = app.currentUser.profile.email;
+    const userEmail = app.currentUser.profile.email; // Get the current user's email
 
     let realm;
     try {
-        // Open the realm
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
+        // Open a subscription to the Reviews collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Reviews"), {
                 name: "reviews-data",
@@ -138,6 +136,7 @@ router.get('/getUserReviews', async (req, res) => {
             });
         });
 
+        // Get the reviews object from the realm, puts in an array to return.
         const reviewsCollection = realm.objects(Reviews);
         const reviews = reviewsCollection.filtered('email == $0', userEmail);
         const reviewsArray = Array.from(reviews);
@@ -149,15 +148,13 @@ router.get('/getUserReviews', async (req, res) => {
         });
 
     } catch (err) {
-        // Handle any errors that occur during retrieval
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while retrieving the user's review data",
             error: err.message
         });
     } finally {
-        if (realm)
-            realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
 
 
@@ -166,13 +163,11 @@ router.get('/getUserReviews', async (req, res) => {
 router.get('/getReviewsByLocation', async (req, res) => {
     const location_id = req.query.location_id;
 
-    const userEmail = app.currentUser.profile.email;
-
     let realm;
     try {
-        // Open the realm
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
+        // Open a subscription to the Reviews collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Reviews"), {
                 name: "reviews-data",
@@ -180,10 +175,8 @@ router.get('/getReviewsByLocation', async (req, res) => {
             });
         });
 
-        console.log("location_id", location_id);
-
+        // Get the reviews object from the realm, puts in an array to return.
         const reviewsCollection = realm.objects(Reviews);
-        console.log("reviewsCollection", reviewsCollection);
         const reviews = reviewsCollection.filtered('location_id == $0', location_id);
         const reviewsArray = Array.from(reviews);
 
@@ -194,15 +187,13 @@ router.get('/getReviewsByLocation', async (req, res) => {
         });
 
     } catch (err) {
-        // Handle any errors that occur during retrieval
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while retrieving the user's review data",
             error: err.message
         });
     } finally {
-        if (realm)
-            realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
 
 

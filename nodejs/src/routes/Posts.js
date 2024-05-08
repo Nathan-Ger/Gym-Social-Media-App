@@ -37,9 +37,9 @@ router.post('/createPost', async (req, res) => {
 
     let realm;
     try {
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
-        realm = await openRealm(app.currentUser);
-
+        // Open a subscription to the Posts collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Posts"), {
                 name: "all-posts",
@@ -47,6 +47,7 @@ router.post('/createPost', async (req, res) => {
             });
         });
 
+        // Create a new Posts object in the realm
         let newPost;
         realm.write(() => {
             const newId = new Realm.BSON.ObjectId();
@@ -68,7 +69,6 @@ router.post('/createPost', async (req, res) => {
         });
 
     } catch (err) {
-        // If an error occurs, return an error message with an error code
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while creating an Posts doc",
@@ -84,13 +84,13 @@ router.post('/createPost', async (req, res) => {
 router.post('/updatePost', async (req, res) => {
     let { postId, field, newValue } = req.body;
 
-    field = field.toLowerCase();
+    field = field.toLowerCase(); // Convert the field to lowercase for consistency
 
     let realm;
     try {
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
-        realm = await openRealm(app.currentUser);
-
+        // Open a subscription to the Posts collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Posts"), {
                 name: "all-posts",
@@ -98,8 +98,10 @@ router.post('/updatePost', async (req, res) => {
             });
         });
 
+        // Find the post by the posts _id
         const post = realm.objects("Posts").filtered("_idString == $0", postId)[0];
 
+        // If the post is not found, return an error
         if (!post) {
             return res.status(400).json({
                 status: "FAILED",
@@ -130,20 +132,20 @@ router.post('/updatePost', async (req, res) => {
             error: error.message
         });
     } finally {
-        realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm after the operation is complete.
     }
 
 });
 
 router.get('/getUserPosts', async (req, res) => {
 
-    const userEmail = app.currentUser.profile.email;
+    const userEmail = app.currentUser.profile.email; // Get the current user's email
 
     let realm;
     try {
-        // Open the realm
-        realm = await openRealm(app.currentUser);
+        realm = await openRealm(app.currentUser); // Opens realm for user
 
+        // Open a subscription to the Posts collection, required to access the data in Realm.
         await realm.subscriptions.update((mutableSubs) => {
             mutableSubs.add(realm.objects("Posts"), {
                 name: "posts-data",
@@ -151,6 +153,7 @@ router.get('/getUserPosts', async (req, res) => {
             });
         });
 
+        // Get the posts for the current user, puts in array to return
         const postsCollection = realm.objects(Posts);
         const posts = postsCollection.filtered('email == $0', userEmail);
         const postsArray = Array.from(posts);
@@ -162,17 +165,14 @@ router.get('/getUserPosts', async (req, res) => {
         });
 
     } catch (err) {
-        // Handle any errors that occur during retrieval
         res.status(500).json({
             status: "FAILED",
             message: "An error occurred while retrieving the user's post data",
             error: err.message
         });
     } finally {
-        if (realm)
-            realm = await closeRealm(realm);
+        realm = await closeRealm(realm); // Close the realm
     }
-
 
 });
 

@@ -1,11 +1,10 @@
 package com.example.model;
-
 import org.bson.types.ObjectId;
 
-/**
- * @author NathanaelGermain
- * 
- * 
+/** Locations.java
+ * @author Nathanael Germain
+ *
+ * Lines up with MongoDB Schema
  */
 public class Locations {
 

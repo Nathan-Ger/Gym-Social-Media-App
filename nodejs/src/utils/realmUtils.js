@@ -1,15 +1,23 @@
 const Realm = require('realm');
-const User = require('../models/User');
-const Exercise = require('../models/Exercise');
-const Posts = require('../models/Posts');
-const Locations = require('../models/Locations');
-const Reviews = require('../models/Reviews');
+const User = require('../models/User'); // Import the User model
+const Exercise = require('../models/Exercise'); // Import the Exercise model
+const Posts = require('../models/Posts'); // Import the Posts model
+const Locations = require('../models/Locations'); // Import the Locations model
+const Reviews = require('../models/Reviews'); // Import the Reviews model
+
+/** realmUtils.js
+ * @author Nathanael Germain
+ *
+ * This script contains utility functions for opening and closing a Realm, as well as finding a user by email.
+ * 
+ * 
+ */
 
 // Function to open a Realm with a specified user and configuration
 async function openRealm(user) {
 
     const config = {
-        schema: [User, Exercise, Posts, Locations, Reviews], // Ensure the schema is correctly referenced
+        schema: [User, Exercise, Posts, Locations, Reviews], // Schemas realm is being opened for.
         sync: {
             user: user,
             flexible: true
@@ -26,7 +34,7 @@ async function openRealm(user) {
     }
 }
 
-// Function to close a Realm
+// Function to close a Realm instance.
 function closeRealm(realm) {
     if (!realm) {
         console.log("No Realm instance provided to close.");
@@ -38,14 +46,9 @@ function closeRealm(realm) {
         console.log("Realm has been closed successfully.");
     }
 }
-async function findUserByEmail(app, realm, user) {
 
-    console.log("User:", user)
-    console.log("Current user:", app.currentUser);
-    console.log("User data:", app.currentUser.data);
-    console.log("User email:", user.data.email)
-
-
+// Function to find a user _id by email
+async function findUserByEmail(app, realm) {
     let email = app.currentUser.data.email;
     
     try {
@@ -55,7 +58,6 @@ async function findUserByEmail(app, realm, user) {
         console.error("Error finding user by email:", error);
         throw error;
     }
-
 }
 
 module.exports = { openRealm, closeRealm, findUserByEmail };
