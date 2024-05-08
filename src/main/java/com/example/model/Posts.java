@@ -1,13 +1,12 @@
 package com.example.model;
-
 import java.util.Date;
 
 import org.bson.types.ObjectId;
 
-/**
- * @author NathanaelGermain
- * 
- * 
+/** Posts.java
+ * @author Nathanael Germain
+ *
+ * Lines up with MongoDB Schema
  */
 public class Posts {
     

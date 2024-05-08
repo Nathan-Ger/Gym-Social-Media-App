@@ -17,6 +17,12 @@ public class ServerViewModel {
     private static String port = "";
     private static volatile boolean serverRunning = false;
 
+    /** startServer()
+     * @author Nathanael Germain
+     *
+     * Starts the nodejs server.
+     * Will save the port number that the server is running on.
+     */
     public static void startServer() {
 
         try {
@@ -55,6 +61,11 @@ public class ServerViewModel {
 
     }
 
+    /** sstopServer()
+     * @author Nathanael Germain
+     *
+     * Stops the nodejs server, if one is running.
+     */
     public static void stopServer() {
         if (process != null) {
             serverRunning = false;
@@ -62,75 +73,6 @@ public class ServerViewModel {
             process.destroy();
             process = null;
         }
-    }
-
-    public static void HTTPRequests() {
-
-        // TODO: Create JSON Objects for all types of information we need to change.
-        // Also create (inside the method) to actually pass the information to the postHTTPRequest method.
-
-        /* Methods for users
-         *
-         * We need to be able to change all of the below
-         * fName - String
-         * lName - String
-         * username - String
-         * phoneNumber - String
-         * startingWeight - double
-         * currentWeight - double
-         * goalWeight - double
-         * height - double
-         * profilePicture - String
-         * totalTimeInGym - double
-         * totalCaloriesBurned - double
-         */
-
-        /* Methods for Exercises
-         *
-         * We need to be able to change all of the below
-         * username - String
-         * caloriesBurned - double
-         */
-
-        /* Methods for Posts
-         *
-         * We need to be able to change all of the below
-         * username - String
-         * caption - String
-         * likes - int
-         */
-
-        /* Methods for Locations
-         *
-         * We need to be able to change all of the below
-         * averageRating - double
-         * posts - Reviews[] <-- Ignore this one for now
-         */
-
-        /* Methods for Reviews
-         *
-         * We need to be able to change all of the below
-         * username - String
-         * rating - double
-         * review - String
-         */
-
-        // Below is an example of a login data being made.
-
-        try {
-
-            // Create a JSON string with the login data
-            String loginData = new JSONObject()
-                    .put("email", "nathanlgermain@gmail.com")
-                    .put("password", "Angrybirds4fun!!")
-                    .put("username", "nathanlgermain")
-                    .toString();
-
-            postHTTPRequest(loginData, "/credentials/login");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     //Author: Gagan Sapkota
@@ -222,10 +164,14 @@ public class ServerViewModel {
         postHTTPRequest(updateFieldData, "/users/updateField");
     }
 
-    // data is the JSON data we create. endpoint is the endpoint we want to send the data to.
-    // endpoint should always start with a forward slash. then the file name, which should be the object you are sending to, then the method.
-    // For example, if we are sending a login request, the endpoint should be "/credentials/login"
-    // For changing a users name, it should be "/users/changeName".
+    /** HTTPRequests(String, String)
+     * @author Nathanael Germain
+     *
+     * Sends a POST request to the server, using given data.
+     *
+     * @param data - The JSON data to send to the server.
+     * @param endpoint - The endpoint to send the data to.
+     */
     public static void postHTTPRequest(String data, String endpoint) {
 
         if (!serverRunning) {
@@ -250,7 +196,7 @@ public class ServerViewModel {
                 HttpResponse<String> loginResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
                 // Get the response content
                 String responseContent = loginResponse.body();
-                System.out.println(responseContent); // TODO: For now we just print the response. Let Nathan Change this.
+                System.out.println(responseContent); // Printed response, data must be accessed
             } catch (IOException | InterruptedException e) {
                 System.out.println("Error while logging in: " + e.getMessage());
             }
@@ -260,6 +206,7 @@ public class ServerViewModel {
         }
     }
 
+    // Code to close the server
     public static void closeServer() {
         serverRunning = false;
         stopServer();
