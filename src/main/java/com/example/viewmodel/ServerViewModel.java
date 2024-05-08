@@ -10,17 +10,15 @@ import java.net.http.HttpResponse;
 
 import org.json.JSONObject;
 
-public class ServerViewModel
-{
+public class ServerViewModel {
 
     private static Process process = null;
     private static ProcessBuilder processBuilder = new ProcessBuilder("node", "nodejs/server.js");
     private static String port = "";
     private static volatile boolean serverRunning = false;
 
-    public static void startServer()
-    {
-        
+    public static void startServer() {
+
         try {
             process = processBuilder.start();
             serverRunning = true;
@@ -66,58 +64,11 @@ public class ServerViewModel
         }
     }
 
-
-//Author: Gagan
-    // Methods to set user data fields
-    public void setFirstName(JSONObject userData, String fName) {
-        userData.put("fName", fName);
-    }
-
-    public void setLastName(JSONObject userData, String lName) {
-        userData.put("lName", lName);
-    }
-
-    public void setUsername(JSONObject userData, String username) {
-        userData.put("username", username);
-    }
-
-    public void setPhoneNumber(JSONObject userData, String phoneNumber) {
-        userData.put("phoneNumber", phoneNumber);
-    }
-
-    public void setStartingWeight(JSONObject userData, double startingWeight) {
-        userData.put("startingWeight", startingWeight);
-    }
-
-    public void setCurrentWeight(JSONObject userData, double currentWeight) {
-        userData.put("currentWeight", currentWeight);
-    }
-
-    public void setGoalWeight(JSONObject userData, double goalWeight) {
-        userData.put("goalWeight", goalWeight);
-    }
-
-    public void setHeight(JSONObject userData, double height) {
-        userData.put("height", height);
-    }
-
-    public void setProfilePicture(JSONObject userData, String profilePicture) {
-        userData.put("profilePicture", profilePicture);
-    }
-
-    public void setTotalTimeInGym(JSONObject userData, double totalTimeInGym) {
-        userData.put("totalTimeInGym", totalTimeInGym);
-    }
-
-    public void setTotalCaloriesBurned(JSONObject userData, double totalCaloriesBurned) {
-        userData.put("totalCaloriesBurned", totalCaloriesBurned);
-    }
-
     public static void HTTPRequests() {
 
         // TODO: Create JSON Objects for all types of information we need to change.
         // Also create (inside the method) to actually pass the information to the postHTTPRequest method.
-        
+
         /* Methods for users
          *
          * We need to be able to change all of the below
@@ -164,58 +115,111 @@ public class ServerViewModel
          * review - String
          */
 
-        //Author: Gagan
-        try {
-
-
-            // Create JSON object for exercise data
-            JSONObject exerciseData = new JSONObject()
-                    .put("username", "johndoe")
-                    .put("caloriesBurned", 150.0);
-
-            // Create JSON object for post data
-            JSONObject postData = new JSONObject()
-                    .put("username", "johndoe")
-                    .put("caption", "Having a great workout session!")
-                    .put("likes", 10);
-
-            // Create JSON object for location data
-            JSONObject locationData = new JSONObject()
-                    .put("averageRating", 4.5);
-
-            // Create JSON object for review data
-            JSONObject reviewData = new JSONObject()
-                    .put("username", "johndoe")
-                    .put("rating", 4.0)
-                    .put("review", "Great experience!");
-
-
         // Below is an example of a login data being made.
 
+        try {
 
-            
             // Create a JSON string with the login data
             String loginData = new JSONObject()
-                .put("email", "nathanlgermain@gmail.com")
-                .put("password", "Angrybirds4fun!!")
-                .put("username", "nathanlgermain")
-                .toString();
-
-
-
-            postHTTPRequest(exerciseData.toString(), "/exercises/add");
-            postHTTPRequest(postData.toString(), "/posts/create");
-            postHTTPRequest(locationData.toString(), "/locations/add");
-            postHTTPRequest(reviewData.toString(), "/reviews/add");
-
+                    .put("email", "nathanlgermain@gmail.com")
+                    .put("password", "Angrybirds4fun!!")
+                    .put("username", "nathanlgermain")
+                    .toString();
 
             postHTTPRequest(loginData, "/credentials/login");
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    //Author: Gagan Sapkota
+    // Methods to set user data fields
+    public void setTotalTimeInGym(double totalTimeInGym) {
+        String totalTimeInGymData = new JSONObject()
+                .put("totalTimeInGym", totalTimeInGym)
+                .toString();
+        postHTTPRequest(totalTimeInGymData, "/users/updateTotalTimeInGym");
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        String profilePictureData = new JSONObject()
+                .put("profilePicture", profilePicture)
+                .toString();
+        postHTTPRequest(profilePictureData, "/users/updateProfilePicture");
+    }
+
+    public void setFirstName(String fName) {
+        String firstNameData = new JSONObject()
+                .put("fName", fName)
+                .toString();
+        postHTTPRequest(firstNameData, "/users/updateFirstName");
+    }
+
+    public void setLastName(String lName) {
+        String lastNameData = new JSONObject()
+                .put("lName", lName)
+                .toString();
+        postHTTPRequest(lastNameData, "/users/updateLastName");
+    }
+
+    public void setUsername(String username) {
+        String usernameData = new JSONObject()
+                .put("username", username)
+                .toString();
+        postHTTPRequest(usernameData, "/users/updateUsername");
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        String phoneNumberData = new JSONObject()
+                .put("phoneNumber", phoneNumber)
+                .toString();
+        postHTTPRequest(phoneNumberData, "/users/updatePhoneNumber");
+    }
+
+    public void setStartingWeight(double startingWeight) {
+        String startingWeightData = new JSONObject()
+                .put("startingWeight", startingWeight)
+                .toString();
+        postHTTPRequest(startingWeightData, "/users/updateStartingWeight");
+    }
+
+    public void setCurrentWeight(double currentWeight) {
+        String currentWeightData = new JSONObject()
+                .put("currentWeight", currentWeight)
+                .toString();
+        postHTTPRequest(currentWeightData, "/users/updateCurrentWeight");
+    }
+
+    public void setGoalWeight(double goalWeight) {
+        String goalWeightData = new JSONObject()
+                .put("goalWeight", goalWeight)
+                .toString();
+        postHTTPRequest(goalWeightData, "/users/updateGoalWeight");
+    }
+
+    public void setHeight(double height) {
+        String heightData = new JSONObject()
+                .put("height", height)
+                .toString();
+        postHTTPRequest(heightData, "/users/updateHeight");
+    }
+
+    public void setTotalCaloriesBurned(double caloriesBurned)
+    {
+        String totalCaloriesBurnedData = new JSONObject()
+                .put("caloriesBurned", caloriesBurned)
+                .toString();
+        postHTTPRequest(totalCaloriesBurnedData, "/users/updateCaloriesBurned");
+    }
+
+    // Additional method to update any field for the user
+    public void updateFieldUser(String field, String newValue) {
+        String updateFieldData = new JSONObject()
+                .put("field", field)
+                .put("newValue", newValue)
+                .toString();
+        postHTTPRequest(updateFieldData, "/users/updateField");
     }
 
     // data is the JSON data we create. endpoint is the endpoint we want to send the data to.
@@ -236,10 +240,10 @@ public class ServerViewModel
 
             // Create a HttpRequest for the login
             HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://localhost:" + port + endpoint))
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(data))
-            .build();
+                    .uri(URI.create("http://localhost:" + port + endpoint))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(data))
+                    .build();
 
             // Send the request and get the response.
             try {
