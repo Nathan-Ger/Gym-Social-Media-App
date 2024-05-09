@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class DataFetchController {
 /*    Here are the fx:id values you can use in your controller:
             id: firstNameTextField - for the first name input field.
@@ -40,7 +42,6 @@ public class DataFetchController {
     private Button startJourneyButton;
 
 
-
     @FXML
     private ImageView searchingPhoto; // Ensure this matches the FX ID in your FXML file.
 
@@ -56,20 +57,29 @@ public class DataFetchController {
     //write to database from the textfields
 
     //make sure first name and last name are just strings and make sure phone num takes an integer and height takes an integer, weight only takes a double, if so cacth it and display to the user
-    /**
-     * @author Prajwol Shrestha
-     * button clicked
-     */    @FXML
-    private void handleDashBtnAction(ActionEvent event) {
+
+    @FXML
+    private void handleDashBtnAction() {
         if (checkFields()) {
-            showAlert(Alert.AlertType.INFORMATION, "Validation Success", "All fields are valid.");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/dashboard.fxml"));
+                Parent dashboardParent = loader.load();
+                Scene dashboardScene = new Scene(dashboardParent);
+
+                Stage window = (Stage) startJourneyButton.getScene().getWindow();
+                window.setScene(dashboardScene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-/**
- * @author Prajwol Shrestha
- * gets inputs
- */
+    /**
+     * @author: Prajwol Shrestha
+     * Validation
+     * @return
+     */
     private boolean checkFields() {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -77,47 +87,39 @@ public class DataFetchController {
         String weight = weightTextField.getText();
         String height = heightTextField.getText();
 
-/**
- *  @author: Prajwol Shrestha
- *  the validation if else to either move on or alert
- */
         if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || weight.isEmpty() || height.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Empty Fields", "Please fill in all fields.");
-            return false;                                                   // for if any field is empty
+            return false;
         }
-        try {
-            // Validate phone number
-            if (phoneNumber.length() != 7 && phoneNumber.length() != 10) { // if phone # is not 7 or 10
-                showAlert(Alert.AlertType.ERROR, "Invalid Phone Number", "Phone number should be a valid 7 or 10 digit integer.");
-                return false;
-            }
-            Long.parseLong(phoneNumber);    // alert if not a number
-            Double.parseDouble(weight);     // alert exception if not a number
 
-            String[] heightParts = height.split("'");   // height must be a 1 number or split by comma (5'11)
+        try {
+            if (phoneNumber.length() != 7 && phoneNumber.length() != 10) {
+                showAlert(Alert.AlertType.ERROR, "Invalid Phone Number", "Phone number should be a valid 7 or 10 digit integer.");
+                return false;       // Validate phone number
+            }
+            Long.parseLong(phoneNumber); // alerts if not a number
+
+            // validates weight
+            Double.parseDouble(weight); // alerts if not a number
+
+            // validates height
+            String[] heightParts = height.split("'");
             if (heightParts.length != 2) {
                 showAlert(Alert.AlertType.ERROR, "Invalid Height Format", "Height should be in feet & inches format (5'10).");
                 return false;
             }
-            Double.parseDouble(heightParts[0]);     // alerts if not a number
-            Double.parseDouble(heightParts[1]);     // alerts if not a number
+            Double.parseDouble(heightParts[0]); // alerts if not a number
+            Double.parseDouble(heightParts[1]); // alerts if not a number
 
-            return true;    // if all fields are valid
+            return true; //  fields are valid
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Invalid Input", "Enter valid data; Ex: Praj, Shr, 5161231234, 153.1, 5'11.");
-            return false;   // if even one field is invalid
+            return false; // at least one field is invalid
         }
     }
 
-    /**
-     * @author: Prajwol Shrestha
-     * alerts that get called
-     * @param alertType
-     * @param title
-     * @param message
-     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
+        Alert alert = new Alert(alertType);     // alerts method
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
