@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple Map</title>
+    <title>Map with Multiple Gyms near Farmingdale</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -10,8 +10,9 @@
 <div id="map" style="width: 690px; height: 540px;"></div>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
+    // Initialize the map centered on Farmingdale State College
     var map = L.map('map', {
-        center: [51.505, -0.09],
+        center: [40.7514, -73.4260], // Approximate coordinates near the college
         zoom: 13,
         layers: [
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -21,9 +22,65 @@
         ]
     });
 
+    // Helper function to bind hover events for popups
+    function bindHoverPopup(marker, content) {
+        marker.bindPopup(content);
+
+        marker.on('mouseover', function() {
+            this.openPopup();
+        });
+
+        marker.on('mouseout', function() {
+            this.closePopup();
+        });
+    }
+
+    // Add markers with hover popups
+    var gym1Content = `
+        <b>LA Fitness</b><br>
+        <span>Rating: ⭐⭐⭐⭐⭐</span><br>
+        <i>Reviews:</i><br>
+        - "Fantastic gym with top-notch equipment and friendly staff!"<br>
+        - "Great range of classes and very clean facility."<br>
+    `;
+    var gym1 = L.marker([40.7261878, -73.5030289]).addTo(map);
+    bindHoverPopup(gym1, gym1Content);
+
+    var gym2Content = `
+        <b>Planet Fitness</b><br>
+        <span>Rating: ⭐⭐⭐⭐⭐</span><br>
+        <i>Reviews:</i><br>
+        - "Affordable, high-quality equipment, and excellent staff."<br>
+        - "Convenient hours and clean showers!"<br>
+    `;
+    var gym2 = L.marker([40.7440, -73.4930]).addTo(map);
+    bindHoverPopup(gym2, gym2Content);
+
+    var gym3Content = `
+        <b>Gold's Gym</b><br>
+        <span>Rating: ⭐⭐⭐⭐⭐</span><br>
+        <i>Reviews:</i><br>
+        - "Great atmosphere, high-end equipment, and very spacious."<br>
+        - "Helpful trainers and a motivating environment!"<br>
+    `;
+    var gym3 = L.marker([40.7410, -73.4700]).addTo(map);
+    bindHoverPopup(gym3, gym3Content);
+
+    var gym4Content = `
+        <b>Crunch Fitness</b><br>
+        <span>Rating: ⭐⭐⭐⭐⭐</span><br>
+        <i>Reviews:</i><br>
+        - "A vibrant environment with a fantastic mix of classes!"<br>
+        - "Amazing facilities and friendly trainers."<br>
+    `;
+    var gym4 = L.marker([40.7350, -73.4850]).addTo(map);
+    bindHoverPopup(gym4, gym4Content);
+
+    // Catch tile loading errors
     map.on('tileerror', function(error, tile) {
         console.log("Tile loading error:", error, tile);
     });
+
 </script>
 </body>
 </html>

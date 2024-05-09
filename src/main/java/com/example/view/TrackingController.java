@@ -1,9 +1,6 @@
 package com.example.view;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +8,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+
+import java.net.URL;
 
 public class TrackingController {
 
@@ -47,15 +53,57 @@ public class TrackingController {
     }
 
 
+    //this is for the edit btn
+    @FXML
+    private void handleEditButtonAction(ActionEvent event) {
+        try {
+            // Load the sign-up page FXML
+            Parent profile = FXMLLoader.load(getClass().getResource("/com/example/profile.fxml"));
+            Scene profileView = new Scene(profile);
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(profileView);
+            window.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public WebView weatherWebView;
+    public WebView webViewMessageWeather;
     @FXML
     private PieChart cardioPieChart;
     @FXML
     private LineChart<String, Number> weeklyProgressChart;
     @FXML
     private BarChart<String, Number> weeklyTotalTimeChart;
+    @FXML
+    public Pane rootPane;
 
     @FXML
     public void initialize() {
+        //weather application features here
+        try {
+            // Load the HTML file into the WebView
+            URL urlHtml = getClass().getResource("/weather.html");
+            URL urlHtml2 = getClass().getResource("/weatherMessage.html");
+            weatherWebView.getEngine().load(urlHtml.toExternalForm());
+            webViewMessageWeather.getEngine().load(urlHtml2.toExternalForm());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Initializing controller: Applying smooth color transition...");
+        // Creating a rectangle with rounded corners and the appropriate size
+        Rectangle rect = new Rectangle();
+        rect.widthProperty().bind(rootPane.widthProperty());
+        rect.heightProperty().bind(rootPane.heightProperty());
+        rect.setArcWidth(40); // Adjust to match your rounded corner radius
+        rect.setArcHeight(40);
+        // Initial fill color
+        rect.setFill(Color.web("#FB6D48"));
+        // Add the rectangle as the first child of the pane
+        rootPane.getChildren().add(0, rect);
+        // Applying the smooth fill transition
+        applySmoothFillTransition(rect, Color.web("#FB6D48"), Color.web("#111B18"));
+
         //this is for the weekly chart
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Days");
@@ -116,6 +164,25 @@ public class TrackingController {
         barSeries.getData().add(new XYChart.Data<>("Sun", 90));
 
         weeklyTotalTimeChart.getData().add(barSeries);
+    }
+
+
+    @FXML
+    /**
+     * Applies a fill transition to the given rectangle.
+     * @param rect The rectangle to apply the effect on.
+     * @param fromColor The starting color.
+     * @param toColor The ending color.
+     */
+    private void applySmoothFillTransition(Rectangle rect, Color fromColor, Color toColor) {
+        // Create the fill transition with a longer duration (10 seconds)
+        FillTransition fillTransition = new FillTransition(Duration.seconds(10), rect, fromColor, toColor);
+        fillTransition.setCycleCount(FillTransition.INDEFINITE); // Loop indefinitely
+        fillTransition.setAutoReverse(true); // Reverse the direction
+        fillTransition.setInterpolator(Interpolator.LINEAR); // Ensuringthe  smooth interpolation
+
+        System.out.println("FillTransition started with a linear interpolator.");
+        fillTransition.play();
     }
 
 }
