@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New York Weather Info</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LtrjvnR4/JTQt6xR5u7s1QvIAqVRYdThRz93pOCxG/xpFiG2BlnQxnhpO7x53Kuj" crossorigin="anonymous">
+</head>
+<body>
+<style>
+    body{
+        body{
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+        margin:0px;
+        padding: 0px;
+
+
+    }
+    }
+    .weather-title-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .weather-title {
+        font-weight: bold;
+        color: #317F6A;
+        margin-right: 10px;
+    }
+
+    .icon {
+        width: 80px;
+        height: 80px;
+    }
+</style>
+
+<div class="weather-title-container">
+    <h1 class="weather-title" id="weatherInfo">Fetching weather data...</h1>
+    <img src="com/example/images/sunny.png" alt="Weather Icon" class="icon" id="weatherIcon">
+</div>
+
+<script>
+    // Function to fetch and display New York weather
+    async function fetchNewYorkWeather() {
+        const apiKey = 'f655f554dcf668cd0502b5d97263e67f';
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=New%20York&appid=${apiKey}&units=imperial`;
+
+        try {
+            // Fetch weather data
+            const response = await fetch(url);
+
+            if (response.ok) {
+                const data = await response.json();
+                const weatherMain = data.weather[0].main; // Main weather condition
+               //
+                const temperature = data.main.temp; // Current temperature
+
+                // Update the displayed temperature and condition
+                document.getElementById('weatherInfo').innerHTML = `
+                    <span>${temperature.toFixed(1)}F- ${weatherMain}</span>
+                `;
+
+                // Change the icon based on weather condition
+                const weatherIcon = document.getElementById('weatherIcon');
+
+                switch (weatherMain) {
+                    case 'Clear':
+                        weatherIcon.src = 'com/example/images/sunny.png';
+                        break;
+                    case 'Rain':
+                    case 'Drizzle':
+                        weatherIcon.src = 'com/example/images/raining.png';
+                        break;
+                    case 'Clouds':
+                        weatherIcon.src = 'com/example/images/cloudy.png';
+                        break;
+                    default:
+                        weatherIcon.src = 'com/example/images/sunny.png'; // Default to sunny if undefined
+                }
+            } else {
+                // Handle errors from the response
+                const errorData = await response.json();
+                document.getElementById('weatherInfo').innerHTML = `Error: ${errorData.message}`;
+                console.error("Error:", errorData.message);
+            }
+        } catch (error) {
+            // Handle network or other errors
+            document.getElementById('weatherInfo').innerHTML = `Error fetching data: ${error.message}`;
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    // Fetch New York weather data on page load
+    fetchNewYorkWeather();
+</script>
+</body>
+</html>

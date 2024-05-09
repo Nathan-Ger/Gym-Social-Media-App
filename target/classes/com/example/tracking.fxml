@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -19,12 +21,13 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.web.WebView?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.view.TrackingController" >
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.view.TrackingController">
     <left>
         <AnchorPane prefHeight="700.0" prefWidth="250.0" BorderPane.alignment="CENTER">
             <children>
-                <VBox stylesheets="@chart-style.css" alignment="TOP_CENTER" layoutX="-1.0" layoutY="76.0" prefHeight="700.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 25;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="76.0" prefHeight="700.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 25;" stylesheets="@chart-style.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <children>
                         <Text fill="#287664" strokeType="OUTSIDE" strokeWidth="0.0" text="BeFit">
                             <font>
@@ -50,7 +53,7 @@
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Text>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: #64FCD9; -fx-text-fill: black; -fx-background-radius: 25;" text="Edit">
+                        <Button mnemonicParsing="false" onAction="#handleEditButtonAction" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: #64FCD9; -fx-text-fill: black; -fx-background-radius: 25;" text="Edit">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -58,22 +61,22 @@
                                 <Insets bottom="70.0" />
                             </VBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 16;" text="Dashboard" onAction="#handleDashBoardInBtnAction">
+                        <Button mnemonicParsing="false" onAction="#handleDashBoardInBtnAction" prefHeight="50.0" prefWidth="250.0" styleClass="button" text="Dashboard">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: white; -fx-font-size: 16; -fx-text-fill: black;" text="Review Gym &amp; Restaurants" textAlignment="CENTER" onAction="#handleMapBtnAction">
+                        <Button mnemonicParsing="false" onAction="#handleMapBtnAction" prefHeight="60.0" prefWidth="250.0" styleClass="button" text="Review Gym &amp; Restaurants" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: white; -fx-font-size: 16; -fx-text-fill: black;" text="Track Your Progress" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" styleClass="button" text="Track Your Progress" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: white; -fx-font-size: 16; -fx-text-fill: black;" text="media" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" styleClass="button" text="media" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
@@ -99,30 +102,32 @@
             <children>
                 <VBox layoutX="325.0" layoutY="250.0" prefHeight="700.0" prefWidth="749.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <Pane prefHeight="123.0" prefWidth="750.0" style="-fx-background-color: white;">
-                            <children>
-                                <Text fill="#111b18" layoutX="60.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Track Your Progress">
-                                    <font>
-                                        <Font size="29.0" />
-                                    </font>
-                                </Text>
-                            </children>
-                        </Pane>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="243.0" prefWidth="750.0" style="-fx-background-color: white;">
+                     <children>
+                              <Pane prefHeight="155.0" prefWidth="750.0" style="-fx-background-color: white;">
+                                  <children>
+                                      <WebView fx:id="weatherWebView" layoutX="13.0" layoutY="16.0" prefHeight="100.0" prefWidth="294.0" />
+                                      <WebView fx:id="webViewMessageWeather" layoutX="320.0" layoutY="19.0" prefHeight="100.0" prefWidth="407.0" style="-fx-border-color: #111B18; -fx-border-radius: 25; -fx-border-width: 2; -fx-background-color: white; -fx-background-radius: 25;" />
+
+                                  </children>
+                              </Pane>
+                     </children>
+                  </HBox>
                         <HBox alignment="CENTER" prefHeight="701.0" prefWidth="400.0" style="-fx-background-color: white;">
                             <children>
                                 <VBox alignment="CENTER" prefHeight="640.0" prefWidth="400.0" style="-fx-background-color: white;">
                                     <children>
-                                        <Pane prefHeight="510.0" prefWidth="230.0" style="-fx-background-color: #111B18; -fx-background-radius: 25;">
+                                        <Pane fx:id="rootPane" prefHeight="510.0" prefWidth="230.0" style="-fx-background-color: #111B18; -fx-background-radius: 25;">
                                             <VBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                             </VBox.margin>
                                             <children>
-                                                <LineChart stylesheets="@chart-style.css" fx:id="weeklyProgressChart" layoutY="23.0" prefHeight="190.0" prefWidth="281.0" title="weekly progress chart ">
+                                                <LineChart fx:id="weeklyProgressChart" layoutY="23.0" prefHeight="190.0" prefWidth="281.0" stylesheets="@chart-style.css" title="weekly progress chart ">
                                                     <xAxis>
-                                                        <CategoryAxis side="BOTTOM" tickLabelFill="WHITE"  styleClass="axis-label"  />
+                                                        <CategoryAxis side="BOTTOM" styleClass="axis-label" tickLabelFill="WHITE" />
                                                     </xAxis>
                                                     <yAxis>
-                                                        <NumberAxis side="LEFT" tickLabelFill="WHITE" styleClass="axis-label" />
+                                                        <NumberAxis side="LEFT" styleClass="axis-label" tickLabelFill="WHITE" />
                                                     </yAxis>
                                                     <effect>
                                                         <DropShadow />
@@ -144,7 +149,7 @@
                                                         </Text>
                                                     </children>
                                                 </Pane>
-                                                <Button ellipsisString="" layoutX="31.0" layoutY="425.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="102.0" style="-fx-background-color: none; -fx-border-color: #325F54; -fx-border-radius: 25;" text="Switch Workout" textFill="WHITE" wrapText="true" />
+                                                <Button ellipsisString="" layoutX="164.0" layoutY="412.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="102.0" style="-fx-background-color: none; -fx-border-color: #325F54; -fx-border-radius: 25;" text="Switch Workout" textFill="WHITE" wrapText="true" />
                                                 <Text fill="WHITE" layoutX="43.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Weight" />
                                                 <Text fill="WHITE" layoutX="181.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Goal" />
                                                 <Line endX="12.0" endY="-32.0" layoutX="133.0" layoutY="350.0" startX="12.0" startY="27.5" stroke="WHITE" />
@@ -158,6 +163,17 @@
                                                         <Font name="Arial" size="15.0" />
                                                     </font>
                                                 </Text>
+                                    <ImageView blendMode="ADD" cache="true" depthTest="DISABLE" fitHeight="176.0" fitWidth="193.0" layoutX="-35.0" layoutY="384.0">
+                                       <image>
+                                          <Image url="@images/welcome-illustration-512x450-0q0v04vi.png" />
+                                       </image>
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <effect>
+                                          <Blend />
+                                       </effect>
+                                    </ImageView>
                                             </children>
                                         </Pane>
                                     </children>
@@ -173,7 +189,7 @@
                                             </children>
                                         </Pane>
 
-                                        <Pane prefHeight="195.0" prefWidth="287.0" style="-fx-background-color: #317F6A; -fx-background-radius: 25;">
+                                              <Pane prefHeight="195.0" prefWidth="287.0" style="-fx-background-color: #317F6A; -fx-background-radius: 25;">
                                             <VBox.margin>
                                                 <Insets left="10.0" right="10.0" top="10.0" />
                                             </VBox.margin>
@@ -181,9 +197,9 @@
                                                 <ColorAdjust />
                                             </effect>
                                             <children>
-                                                <BarChart stylesheets="@chart-style.css" fx:id="weeklyTotalTimeChart" layoutX="14.0" layoutY="23.0" prefHeight="109.0" prefWidth="253.0" style="-fx-alternative-column-fill-visible: none; -fx-alternative-row-fill-visible: none;" title="total time ">
+                                                <BarChart fx:id="weeklyTotalTimeChart" layoutX="14.0" layoutY="23.0" prefHeight="109.0" prefWidth="253.0" style="-fx-alternative-column-fill-visible: none; -fx-alternative-row-fill-visible: none;" stylesheets="@chart-style.css" title="total time ">
                                                     <xAxis>
-                                                        <CategoryAxis side="BOTTOM" tickLabelFill="WHITE"/>
+                                                        <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" />
                                                     </xAxis>
                                                     <yAxis>
                                                         <NumberAxis side="LEFT" tickLabelFill="WHITE" />

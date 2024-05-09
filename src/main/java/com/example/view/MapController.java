@@ -44,7 +44,20 @@ public class MapController{
             e.printStackTrace();
         }
     }
-
+//this is for the edit btn
+    @FXML
+    private void handleEditButtonAction(ActionEvent event) {
+        try {
+            // Load the sign-up page FXML
+            Parent profile = FXMLLoader.load(getClass().getResource("/com/example/profile.fxml"));
+            Scene profileView = new Scene(profile);
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(profileView);
+            window.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void handleTrackingButtonAction(ActionEvent event) {
         try {

@@ -12,12 +12,11 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
 
-<?import javafx.scene.layout.StackPane?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.view.MapController">
     <left>
         <AnchorPane prefHeight="700.0" prefWidth="250.0" BorderPane.alignment="CENTER">
             <children>
-                <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="76.0" prefHeight="700.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 25;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="76.0" prefHeight="700.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 25;" stylesheets="@chart-style.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <children>
                         <Text fill="#287664" strokeType="OUTSIDE" strokeWidth="0.0" text="BeFit">
                             <font>
@@ -43,7 +42,7 @@
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Text>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: #64FCD9; -fx-text-fill: black; -fx-background-radius: 25;" text="Edit">
+                        <Button mnemonicParsing="false" onAction="#handleEditButtonAction" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: #64FCD9; -fx-text-fill: black; -fx-background-radius: 25;" text="Edit">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -51,22 +50,22 @@
                                 <Insets bottom="70.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="dashboardButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 16;" text="Dashboard" onAction="#handleDashButtonAction">
+                        <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#handleDashButtonAction" prefHeight="50.0" prefWidth="250.0" styleClass="button" text="Dashboard">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: white; -fx-font-size: 16; -fx-text-fill: black;" text="Review Gym &amp; Restaurants" textAlignment="CENTER" >
+                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" styleClass="button" text="Review Gym &amp; Restaurants" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: white; -fx-font-size: 16; -fx-text-fill: black;" text="Track Your Progress" textAlignment="CENTER" onAction="#handleTrackingButtonAction">
+                        <Button mnemonicParsing="false" onAction="#handleTrackingButtonAction" prefHeight="60.0" prefWidth="250.0" styleClass="button" text="Track Your Progress" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: white; -fx-font-size: 16; -fx-text-fill: black;" text="media" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" styleClass="button" text="media" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
@@ -99,6 +98,11 @@
                                         <Font size="29.0" />
                                     </font>
                                 </Text>
+                        <ImageView fitHeight="200.0" fitWidth="197.0" layoutX="523.0" layoutY="-25.0">
+                           <image>
+                              <Image url="@images/globe-illustration-506x512-wgu7vcrb.png" />
+                           </image>
+                        </ImageView>
                             </children>
                         </Pane>
                         <Pane prefHeight="560.0" prefWidth="700.0" style="-fx-background-color: #287664; -fx-background-radius: 25;">

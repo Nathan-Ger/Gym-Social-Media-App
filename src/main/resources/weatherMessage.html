@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New York Weather Info</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LtrjvnR4/JTQt6xR5u7s1QvIAqVRYdThRz93pOCxG/xpFiG2BlnQxnhpO7x53Kuj" crossorigin="anonymous">
+</head>
+<body>
+<style>
+
+    body{
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+        margin:0px;
+        padding: 0px;
+
+
+    }
+    .weather-message {
+        padding: 10px;
+        border-radius: 25px;
+        text-align: center;
+        margin: 0;background-image: url('com/example/images/cloudSun.gif');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .display-4 {
+        color:white;
+        font-size: 1.2em;
+        margin: 0;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    }
+</style>
+
+<div class="container weather-message">
+    <p class="display-4" id="weatherInfo">Fetching New York weather...</p>
+</div>
+
+<script>
+    // Function to fetch and display New York weather
+    async function fetchNewYorkWeather() {
+        const apiKey = 'f655f554dcf668cd0502b5d97263e67f';
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=New%20York&appid=${apiKey}&units=imperial`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const weather = data.weather[0].main; // Get the primary weather condition
+            //
+            const temperature = data.main.temp; // Current temperature
+            let message = '';
+
+            // Determine the message based on weather conditions
+            switch (weather) {
+                case 'Clear':
+                    message = "It's a shiny day to run. Get your shoes and start!";
+                    break;
+                case 'Rain':
+                case 'Drizzle':
+                    message = "It's rainy, but still better to run than not running!";
+                    break;
+                case 'Clouds':
+                    message = "It may look gray, but motivation to run is within you. You've got this!";
+                    break;
+                default:
+                    message = "No matter the weather, stay active and have fun!";
+            }
+
+            // Update the weather info element
+            document.getElementById('weatherInfo').innerHTML = `
+                <span>${message}</span><br>
+            `;
+        } catch (error) {
+            // Handle errors
+            document.getElementById('weatherInfo').innerText = "Unable to fetch weather information. Please try again later.";
+            console.error('Error fetching weather data:', error);
+        }
+    }
+
+    // Fetch New York weather data on page load
+    fetchNewYorkWeather();
+</script>
+</body>
+</html>
