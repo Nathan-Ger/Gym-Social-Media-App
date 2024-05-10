@@ -35,3 +35,4 @@ Program and Hardware:
 Developing an application using Java and other resources.
 Utilizing APIs for gym and restaurant data retrieval.
 
+![UML Diagram](/src/main/resources/com/example/images/UMLs_CSC325_1.png)
